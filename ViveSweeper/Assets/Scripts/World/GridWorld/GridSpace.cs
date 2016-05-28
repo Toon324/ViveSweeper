@@ -5,13 +5,13 @@ namespace Assets.Scripts.World.GridWorld
     public class GridSpace: IGridSpace
     {
         #region Properties
-        private GameObject SpacePiece { get; set; }
+        public GameObject SpacePiece { get; set; }
 
         public int Index { get; set; }
 
-        public NeighborSpaces Neighbors { get; set; }
+        protected NeighborSpaces Neighbors { get; set; }
 
-        private bool Interacting { get; set; }
+        protected bool Interacting { get; set; }
         #endregion
 
         public GridSpace(GameObject space, int index, int worldSize)

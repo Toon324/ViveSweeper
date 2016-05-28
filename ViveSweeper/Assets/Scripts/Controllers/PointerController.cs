@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.World.GridWorld;
+﻿using Assets.Scripts.World;
+using Assets.Scripts.World.GridWorld;
 using UnityEngine;
 
 namespace Assets.Scripts.Controllers

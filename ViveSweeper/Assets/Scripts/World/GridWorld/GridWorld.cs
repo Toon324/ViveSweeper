@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.World.Minesweeper;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Assets.Scripts.World.GridWorld
 {
@@ -45,15 +49,34 @@ namespace Assets.Scripts.World.GridWorld
                 var xPos = x * WorldScaleFactor;
                 var zPos = z * WorldScaleFactor;
 
-
                 var space = (GameObject)
-                    Object.Instantiate(GridSpace, new Vector3(xPos, TransformYPosition, zPos), Quaternion.identity);
+                    UnityEngine.Object.Instantiate(GridSpace, new Vector3(xPos, TransformYPosition, zPos), Quaternion.identity);
 
                 space.name = "" + index;
 
-                World[index] = new GridSpace(space, index, Size);
+                World[index] = new EmptySpace(space, index, Size);
 
                 space.transform.parent = WorldObj.transform;
+            }
+
+            var numOfMines = (int)WorldConstants.CurrentDifficulty;
+
+            var usedIndexes = new List<int>();
+
+            for (var x = numOfMines; x > 0; x--)
+            {
+                var random = new Random();
+                var randomNumber = -1;
+
+                while (randomNumber == -1 || usedIndexes.Contains(randomNumber))
+                {
+                    randomNumber = random.Next(Size * Size);
+                }
+
+                usedIndexes.Add(randomNumber);
+
+                var emptySpace = World[randomNumber];
+                World[randomNumber] = new MineSpace(emptySpace.SpacePiece, emptySpace.Index, Size);
             }
         }
 
@@ -61,7 +84,5 @@ namespace Assets.Scripts.World.GridWorld
         {
             return World[y];
         }
-
-
     }
 }

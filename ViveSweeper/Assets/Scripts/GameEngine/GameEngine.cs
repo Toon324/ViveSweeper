@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.World;
 using Assets.Scripts.World.GridWorld;
 
 public class GameEngine : MonoBehaviour

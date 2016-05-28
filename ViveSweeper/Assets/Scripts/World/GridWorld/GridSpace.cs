@@ -14,6 +14,8 @@ namespace Assets.Scripts.World.GridWorld
 
         public bool IsMine { get; set; }
 
+        public bool HasBeenDug { get; set; }
+
         public bool HasMarker { get; set; }
 
         public int NearbyMines { get; set; }
@@ -29,6 +31,7 @@ namespace Assets.Scripts.World.GridWorld
             Index = index;
             Neighbors = new NeighborSpaces(index, worldSize);
             IsMine = false;
+            HasBeenDug = false;
         }
 
         public void Grab()
@@ -54,7 +57,7 @@ namespace Assets.Scripts.World.GridWorld
             if (HasMarker)
                 return;
 
-            //Interacting = true;
+            HasBeenDug = true;
 
             if (IsMine)
             {
@@ -64,6 +67,8 @@ namespace Assets.Scripts.World.GridWorld
             {
                 EmptySpaceInteraction();
             }
+
+            
         }
 
         private void MineInteraction()
@@ -75,8 +80,10 @@ namespace Assets.Scripts.World.GridWorld
         private void EmptySpaceInteraction()
         {
             SetColor(Color.green);
-            var neighbors = Neighbors.GetListOfNeighborSpaces();
-            NearbyMines = neighbors.Count(x => x.IsMine);
+            var neighbors = Neighbors.GetListOfNeighborSpaces().Where(x => !x.HasBeenDug);
+            var gridSpaces = neighbors as GridSpace[] ?? neighbors.ToArray();
+
+            NearbyMines = gridSpaces.Count(x => x.IsMine);
 
             if (NearbyMines > 0)
             {
@@ -85,7 +92,7 @@ namespace Assets.Scripts.World.GridWorld
             }
             else
             {
-                foreach (var space in neighbors)
+                foreach (var space in gridSpaces)
                 {
                     space.Dig(); // Can be guaranteed to not be a mine
                 }

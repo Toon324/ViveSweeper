@@ -18,6 +18,8 @@ namespace Assets.Scripts.World.GridWorld
 
         public bool HasQuestion { get; set; }
 
+        public bool HasMarker { get; set; }
+
         public int NearbyMines { get; set; }
 
         protected NeighborSpaces Neighbors { get; set; }
@@ -46,6 +48,17 @@ namespace Assets.Scripts.World.GridWorld
             SetColor(Color.gray);
         }
 
+        public void PlantMarker(GameObject marker)
+        {
+            if (Interacting)
+                return;
+
+            Interacting = true;
+            HasMarker = true;
+
+            SetColor(Color.blue);
+        }
+
         public void PlantQuestionMark()
         {
             if (Interacting)
@@ -70,7 +83,7 @@ namespace Assets.Scripts.World.GridWorld
 
         public void Dig()
         {
-            if (Interacting)
+            if (Interacting || HasFlag || HasQuestion || HasMarker)
                 return;
 
             Interacting = true;

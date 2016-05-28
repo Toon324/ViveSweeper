@@ -14,7 +14,7 @@ public class SteamVR_Overlay : MonoBehaviour
 	public bool curved = true;
 	public bool antialias = true;
 	public bool highquality = true;
-	public float scale = 3.0f;			// size of overlay view
+	public float scale = 3.0f;			// Size of overlay view
 	public float distance = 1.25f;		// distance from surface
 	public float alpha = 1.0f;			// opacity 0..1
 

@@ -132,7 +132,7 @@ public class SteamVR_LoadLevel : MonoBehaviour
 			{
 				var progress = (async != null) ? async.progress : 0.0f;
 
-				// Use the full bar size for everything.
+				// Use the full bar Size for everything.
 				var w = progressBarFull.width;
 				var h = progressBarFull.height;
 

@@ -1,58 +1,67 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-public class GridWorld {
+namespace Assets.Scripts.World.GridWorld
+{
+    public class GridWorld {
 
-    public static int size = 9;
+        public int Size { get; set; }
 
-    public static int ysize = size * size;
-
-    private static GridSpace[] world;
-
-    public static GameObject gridSpace;
-
-    private float worldScaleFactor = 1f;
-
-    private GameObject worldObj;
-
-    private int yPos = -1;
-
-    public GridWorld()
-    {
-        world = new GridSpace[size*size];
-
-        gridSpace = WorldConstants.gridSpace;
-
-        worldObj = new GameObject();//(GameObject)GameObject.Instantiate(new GameObject(), new Vector3(0, 0, 0), Quaternion.identity);
-        worldObj.name = "World";
-
-        for (int y = 0; y < size * size; y++)
+        public int TotalSize
         {
-            int x = y / size;
-            int z = y % size;
+            get { return Size * Size; }
+        }
 
-            float xPos = x * worldScaleFactor;
-            float zPos = z * worldScaleFactor;
+        private GridSpace[] World { get; set; }
 
-            GameObject space;
+        public GameObject GridSpace { get; set; }
 
- 
-            space = (GameObject)GameObject.Instantiate(gridSpace, new Vector3(xPos, yPos, zPos), Quaternion.identity);
-                space.name = "" + y;
-                world[y] = new GridSpace(space,  y);
+        private const float WorldScaleFactor = 1f;
 
-            space.transform.parent = worldObj.transform;
+        private GameObject WorldObj { get; set; }
 
+        private const int TransformYPosition = -1;
+
+        public GridWorld(int size = 9)
+        {    
+            Size = size;
+            World = new GridSpace[Size * Size];
+            GridSpace = WorldConstants.GridSpace;
+
+            WorldObj = new GameObject
+            {
+                name = "World"
+            };
+
+            GenerateWorld();
+        }
+
+        private void GenerateWorld()
+        {
+            for (var index = 0; index < Size*Size; index++)
+            {
+                var x = index / Size;
+                var z = index % Size;
+
+                var xPos = x * WorldScaleFactor;
+                var zPos = z * WorldScaleFactor;
+
+
+                var space = (GameObject)
+                    Object.Instantiate(GridSpace, new Vector3(xPos, TransformYPosition, zPos), Quaternion.identity);
+
+                space.name = "" + index;
+
+                World[index] = new GridSpace(space, index, Size);
+
+                space.transform.parent = WorldObj.transform;
+            }
+        }
+
+        public GridSpace GetSpaceFromWorldIndex(int y)
+        {
+            return World[y];
         }
 
 
     }
-
-    public static GridSpace getSpaceFromWorldIndex(int y)
-    {
-        return world[y];
-    }
-
-
 }

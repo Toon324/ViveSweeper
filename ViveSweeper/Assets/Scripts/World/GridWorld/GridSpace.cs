@@ -1,65 +1,84 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class GridSpace {
-
-    private Transform transform;
-    private GameObject spacePiece;
-
-    int index;
-    int up;
-    int upright;
-    int upleft;
-    int down;
-    int downright;
-    int downleft;
-    int right;
-    int left;
-
-    private bool interacting;
-
-    public GridSpace(GameObject space, int index)
+namespace Assets.Scripts.World.GridWorld
+{
+    public class GridSpace: IGridSpace
     {
-        this.spacePiece = space;
-        this.transform = space.transform;
+        #region Properties
+        private GameObject SpacePiece { get; set; }
 
-        this.index = index;
-        this.up = index - GridWorld.size;
-        this.upright = up + 1;
-        this.upleft = up - 1;
-        this.down = index + GridWorld.size;
-        this.downleft = down - 1;
-        this.downright = down + 1;
-        this.right = index + 1;
-        this.left = index - 1;
+        public int Index { get; set; }
 
-        this.interacting = false;
+        public NeighborSpaces Neighbors { get; set; }
 
-    }
+        private bool Interacting { get; set; }
+        #endregion
 
+        public GridSpace(GameObject space, int index, int worldSize)
+        {
+            SpacePiece = space;
+            Index = index;
+            Neighbors = new NeighborSpaces(index, worldSize);
+            Interacting = false;
+        }
 
+        public void Interact()
+        {
+            if (Interacting)
+                return;
 
-
-    public void interact()
-    {
-        if (interacting)
-            return;
-
-        interacting = true;
+            Interacting = true;
               
-        //Debug.Log("Interacting with:"+index);
-        this.spacePiece.GetComponent<MeshRenderer>().material.color = Color.green;
+            //Debug.Log("Interacting with:"+index);
+            SpacePiece.GetComponent<MeshRenderer>().material.color = Color.green;
+        }
+
+        public void DoneInteracting()
+        {
+            SpacePiece.GetComponent<MeshRenderer>().material.color = Color.white;
+            Interacting = false;
+        }
+
+        public Transform GetTransform()
+        {
+            return SpacePiece.transform;
+        }
+
     }
 
-    public void doneInteracting()
+    public class NeighborSpaces
     {
-        this.interacting = false;
-        this.spacePiece.GetComponent<MeshRenderer>().material.color = Color.white;
-    }
+        #region Properties
+        public int Up { get; set; }
+        public int UpRight { get; set; }
+        public int UpLeft { get; set; }
+        public int Down { get; set; }
+        public int DownRight { get; set; }
+        public int DownLeft { get; set; }
+        public int Right { get; set; }
+        public int Left { get; set; }
+        #endregion
 
-    public Transform getTransform()
-    {
-        return spacePiece.transform;
-    }
+        public NeighborSpaces(int index, int worldSize)
+        {
+            SetNeighbors(index, worldSize);
+        }
 
+        public void SetNeighbors(int index, int worldSize)
+        {
+            if (index < 0)
+            {
+                return;
+            }
+
+            Up = index - worldSize;
+            UpRight = Up + 1;
+            UpLeft = Up - 1;
+            Down = index + worldSize;
+            DownLeft = Down - 1;
+            DownRight = Down + 1;
+            Right = index + 1;
+            Left = index - 1;
+        }
+    }
 }

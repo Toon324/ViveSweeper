@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.World.GridWorld;
 
 public class WorldConstants {
 
     //World Objects
-    public static GameObject gridSpace;
+    public static GameObject GridSpace { get; set; }
 
+    public static GridWorld World { get; set; }
 
-    public static void loadObjects()
+    public enum Difficulties { Easy, Medium, Expert }
+
+    public static Difficulties CurrentDifficulty { get; set; }
+
+    public static void LoadObjects()
     {
-        gridSpace = Resources.Load<GameObject>("GridSpace");
+        GridSpace = Resources.Load<GameObject>("GridSpace");
 
     }
 

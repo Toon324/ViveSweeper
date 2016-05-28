@@ -20,7 +20,7 @@ public class SteamVR_SkyboxEditor : Editor
 		"skybox's textures.  Note: This skybox is only used to override what shows up " +
 		"in the compositor (e.g. when loading levels).  Add a Camera component to this " +
 		"object to override default settings like which layers to render.  Additionally, " +
-		"by specifying your own targetTexture, you can control the size of the textures " +
+		"by specifying your own targetTexture, you can control the Size of the textures " +
 		"and other properties like antialiasing.  Don't forget to disable the camera.\n\n" +
 		"For stereo screenshots, a panorama is render for each eye using the specified " +
 		"ipd (in millimeters) broken up into segments cellSize pixels square to optimize " +

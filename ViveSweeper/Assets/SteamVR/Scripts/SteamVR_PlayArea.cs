@@ -59,7 +59,7 @@ public class SteamVR_PlayArea : MonoBehaviour
 				var str = size.ToString().Substring(1);
 				var arr = str.Split(new char[] {'x'}, 2);
 
-				// convert to half size in meters (from cm)
+				// convert to half Size in meters (from cm)
 				var x = float.Parse(arr[0]) / 200;
 				var z = float.Parse(arr[1]) / 200;
 

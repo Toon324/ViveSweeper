@@ -25,11 +25,11 @@ namespace Assets.Scripts.World.GridWorld
         protected Vector3 flagPos = new Vector3(0,1.5f,0);
         #endregion
 
-        public GridSpace(GameObject space, int index)
+        public GridSpace(GameObject space, int index, int rowSize)
         {
             SpacePiece = space;
             Index = index;
-            Neighbors = new NeighborSpaces(index);
+            Neighbors = new NeighborSpaces(index, rowSize);
             IsMine = false;
             HasBeenDug = false;
         }

@@ -54,7 +54,7 @@ namespace Assets.Scripts.World.GridWorld
 
                 space.name = "" + index;
 
-                World[index] = new GridSpace(space, index);
+                World[index] = new GridSpace(space, index, Size);
                 World[index].SetColor(Color.gray);
 
                 space.transform.parent = WorldObj.transform;

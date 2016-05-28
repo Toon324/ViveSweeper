@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 
 namespace Assets.Scripts.World.GridWorld
 {
@@ -16,12 +17,12 @@ namespace Assets.Scripts.World.GridWorld
         public int Left { get; set; }
         #endregion
 
-        public NeighborSpaces(int index)
+        public NeighborSpaces(int index, int rowSize)
         {
-            SetNeighbors(index);
+            SetNeighbors(index, rowSize);
         }
 
-        public void SetNeighbors(int index)
+        public void SetNeighbors(int index, int rowSize)
         {
             if (index < 0)
             {

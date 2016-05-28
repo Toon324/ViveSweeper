@@ -63,7 +63,7 @@ public class HandController : MonoBehaviour
             //toChange.useGravity = false;
             //toChange.isKinematic = true;
 
-            toGrab.transform.parent = this.transform;
+            toGrab.transform.parent = this.gameObject.transform;
             toGrab.transform.localRotation = grabbedObjRot;
             toGrab.transform.localPosition = grabbedObjPos;
 

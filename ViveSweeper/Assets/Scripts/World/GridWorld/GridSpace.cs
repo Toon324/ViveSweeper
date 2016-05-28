@@ -22,7 +22,7 @@ namespace Assets.Scripts.World.GridWorld
 
         protected NeighborSpaces Neighbors { get; set; }
 
-        protected Vector3 flagPos = new Vector3(0,.52f,0);
+        protected Vector3 flagPos = new Vector3(0,1.5f,0);
         #endregion
 
         public GridSpace(GameObject space, int index, int worldSize)
@@ -38,7 +38,10 @@ namespace Assets.Scripts.World.GridWorld
         {
             HasMarker = false;
 
-            SetColor(Color.gray);
+            if (!IsMine)
+                SetColor(Color.gray);
+            else
+                SetColor(Color.red);
         }
 
         public void PlantMarker(GameObject marker)

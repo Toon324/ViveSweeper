@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.World
 {
@@ -12,6 +13,8 @@ namespace Assets.Scripts.World
         public enum Difficulties { Easy = 9, Medium = 39, Expert = 80}
 
         public static Difficulties CurrentDifficulty { get; set; }
+
+        public static List<int> PreviouslyDugSpaces = new List<int>();
 
         public static void LoadObjects()
         {

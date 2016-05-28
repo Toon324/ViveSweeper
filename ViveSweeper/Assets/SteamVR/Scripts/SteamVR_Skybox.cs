@@ -9,7 +9,7 @@ using Valve.VR;
 
 public class SteamVR_Skybox : MonoBehaviour
 {
-	// Note: Unity's Left and Right Skybox shader variables are switched.
+	// Note: Unity's LeftIndex and RightIndex Skybox shader variables are switched.
 	public Texture front, back, left, right, top, bottom;
 
 	public enum CellSize

@@ -41,13 +41,49 @@ namespace Assets.Scripts.World.GridWorld
 
         private void GenerateWorld()
         {
-            for (var index = 0; index < Size*Size; index++)
-            {
-                var x = index / Size;
-                var z = index % Size;
+            GenerateEmptyWorld();
 
-                var xPos = x * WorldScaleFactor;
-                var zPos = z * WorldScaleFactor;
+            PlaceMines();
+
+            foreach (var space in World)
+            {
+                // Prefetch spaces for performance
+                space.Neighbors.SetNeighbors();
+            }
+        }
+
+        private void PlaceMines()
+        {
+            var numOfMines = (int) WorldConstants.CurrentDifficulty;
+
+            var usedIndexes = new List<int>();
+
+            for (var x = numOfMines; x > 0; x--)
+            {
+                var random = new Random();
+                var randomNumber = -1;
+
+                while (randomNumber == -1 || usedIndexes.Contains(randomNumber))
+                {
+                    randomNumber = random.Next(Size*Size);
+                }
+
+                usedIndexes.Add(randomNumber);
+
+                World[randomNumber].IsMine = true;
+                World[randomNumber].SetColor(Color.red);
+            }
+        }
+
+        private void GenerateEmptyWorld()
+        {
+            for (var index = 0; index < TotalSize; index++)
+            {
+                var x = index/Size;
+                var z = index%Size;
+
+                var xPos = x*WorldScaleFactor;
+                var zPos = z*WorldScaleFactor;
 
                 var space = (GameObject)
                     UnityEngine.Object.Instantiate(GridSpace, new Vector3(xPos, TransformYPosition, zPos), Quaternion.identity);
@@ -59,27 +95,6 @@ namespace Assets.Scripts.World.GridWorld
 
                 space.transform.parent = WorldObj.transform;
             }
-
-            var numOfMines = (int)WorldConstants.CurrentDifficulty;
-
-            var usedIndexes = new List<int>();
-
-            for (var x = numOfMines; x > 0; x--)
-            {
-                var random = new Random();
-                var randomNumber = -1;
-
-                while (randomNumber == -1 || usedIndexes.Contains(randomNumber))
-                {
-                    randomNumber = random.Next(Size * Size);
-                }
-
-                usedIndexes.Add(randomNumber);
-
-                World[randomNumber].IsMine = true;
-                World[randomNumber].SetColor(Color.red);
-            }
-            
         }
 
         public bool HasWon()

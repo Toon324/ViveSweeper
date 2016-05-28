@@ -63,30 +63,30 @@ public class MainController : MonoBehaviour {
         float y = Mathf.Abs(pos.y);
         float x = Mathf.Abs(pos.x);
 
-        //Up/Down
+        //UpIndex/DownIndex
         if(y >= x)
         {
-            //Up
+            //UpIndex
             if (pos.y >= 0)
             {
                 switchToShovelCont();
             }
-            //Down
+            //DownIndex
             else
             {
                 switchToHandCont();
             }
 
         }
-        //Right/Left
+        //RightIndex/LeftIndex
         else
         {
-            //Right
+            //RightIndex
             if(pos.x >= 0)
             {
 
             }
-            //Left
+            //LeftIndex
             else
             {
                 switchToTeleportCont();

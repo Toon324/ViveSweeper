@@ -36,6 +36,8 @@ public class GameEngine : MonoBehaviour
         }
 
         WorldConstants.World = World;
+
+        World.GetSpaceFromWorldIndex(5).Dig();
         //player = new Player();
 
     }

@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.World.Minesweeper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
@@ -54,7 +53,8 @@ namespace Assets.Scripts.World.GridWorld
 
                 space.name = "" + index;
 
-                World[index] = new EmptySpace(space, index, Size);
+                World[index] = new GridSpace(space, index, Size);
+                World[index].SetColor(Color.gray);
 
                 space.transform.parent = WorldObj.transform;
             }
@@ -75,8 +75,8 @@ namespace Assets.Scripts.World.GridWorld
 
                 usedIndexes.Add(randomNumber);
 
-                var emptySpace = World[randomNumber];
-                World[randomNumber] = new MineSpace(emptySpace.SpacePiece, emptySpace.Index, Size);
+                World[randomNumber].IsMine = true;
+                World[randomNumber].SetColor(Color.red);
             }
         }
 

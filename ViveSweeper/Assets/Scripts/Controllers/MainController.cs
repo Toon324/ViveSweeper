@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Scripts.Controllers;
+using Assets.Scripts.World.GridWorld;
 
 public class MainController : MonoBehaviour {
 

@@ -28,7 +28,7 @@ namespace Assets.Scripts.World.GridWorld
 
         public void Dig()
         {
-            if (Space.HasMarker)
+            if (Space.HasMarker || Space.HasBeenDug)
                 return;
 
             Space.HasBeenDug = true;

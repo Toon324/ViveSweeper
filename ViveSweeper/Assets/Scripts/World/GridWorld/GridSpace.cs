@@ -9,6 +9,12 @@ namespace Assets.Scripts.World.GridWorld
 
         public int Index { get; set; }
 
+        public bool IsMine { get; set; }
+
+        public bool HasFlag { get; set; }
+
+        public bool HasQuestion { get; set; }
+
         protected NeighborSpaces Neighbors { get; set; }
 
         protected bool Interacting { get; set; }
@@ -20,6 +26,7 @@ namespace Assets.Scripts.World.GridWorld
             Index = index;
             Neighbors = new NeighborSpaces(index, worldSize);
             Interacting = false;
+            IsMine = false;
         }
 
         public void Interact()
@@ -28,20 +35,41 @@ namespace Assets.Scripts.World.GridWorld
                 return;
 
             Interacting = true;
-              
-            //Debug.Log("Interacting with:"+index);
-            SpacePiece.GetComponent<MeshRenderer>().material.color = Color.green;
+
+            if (IsMine)
+            {
+                MineInteraction();
+            }
+            else
+            {
+                EmptySpaceInteraction();
+            }
+        }
+
+        private void MineInteraction()
+        {
+            SetColor(Color.black);
+        }
+
+        private void EmptySpaceInteraction()
+        {
+            SetColor(Color.green);
         }
 
         public void DoneInteracting()
         {
-            SpacePiece.GetComponent<MeshRenderer>().material.color = Color.white;
+            SpacePiece.GetComponent<MeshRenderer>().material.color = Color.white; 
             Interacting = false;
         }
 
         public Transform GetTransform()
         {
             return SpacePiece.transform;
+        }
+
+        public void SetColor(Color color)
+        {
+            SpacePiece.GetComponent<MeshRenderer>().material.color = color;
         }
 
     }

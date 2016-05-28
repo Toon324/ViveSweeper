@@ -29,12 +29,10 @@ namespace Assets.Scripts.World.GridWorld
                 return;
             }
 
-            var worldSize = WorldConstants.World.Size;
-
-            Up = index - worldSize;
+            Up = index - rowSize;
             UpRight = Up + 1;
             UpLeft = Up - 1;
-            Down = index + worldSize;
+            Down = index + rowSize;
             DownLeft = Down - 1;
             DownRight = Down + 1;
             Right = index + 1;

@@ -1,63 +1,73 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 
 namespace Assets.Scripts.World.GridWorld
 {
     public class NeighborSpaces
     {
         #region Properties
-        public int Up { get; set; }
-        public int UpRight { get; set; }
-        public int UpLeft { get; set; }
-        public int Down { get; set; }
-        public int DownRight { get; set; }
-        public int DownLeft { get; set; }
-        public int Right { get; set; }
-        public int Left { get; set; }
+        private int UpIndex { get; set; }
+        private int UpRightIndex { get; set; }
+        private int UpLeftIndex { get; set; }
+        private int DownIndex { get; set; }
+        private int DownRightIndex { get; set; }
+        private int DownLeftIndex { get; set; }
+        private int RightIndex { get; set; }
+        private int LeftIndex { get; set; }
+
+        public GridSpace Up { get; set; }
+        public GridSpace UpRight { get; set; }
+        public GridSpace UpLeft { get; set; }
+        public GridSpace Down { get; set; }
+        public GridSpace DownRight { get; set; }
+        public GridSpace DownLeft { get; set; }
+        public GridSpace Right { get; set; }
+        public GridSpace Left { get; set; }
         #endregion
 
-        public NeighborSpaces(int index, int worldSize)
+        public NeighborSpaces(int index, int rowSize)
         {
-            SetNeighbors(index, worldSize);
+            SetNeighborIndexes(index, rowSize);
         }
 
-        public void SetNeighbors(int index, int worldSize)
+        public void SetNeighborIndexes(int index, int rowSize)
         {
             if (index < 0)
             {
                 return;
             }
 
-            Up = index - worldSize;
-            UpRight = Up + 1;
-            UpLeft = Up - 1;
-            Down = index + worldSize;
-            DownLeft = Down - 1;
-            DownRight = Down + 1;
-            Right = index + 1;
-            Left = index - 1;
+            UpIndex = index - rowSize;
+            UpRightIndex = UpIndex + 1;
+            UpLeftIndex = UpIndex - 1;
+            DownIndex = index + rowSize;
+            DownLeftIndex = DownIndex - 1;
+            DownRightIndex = DownIndex + 1;
+            RightIndex = index + 1;
+            LeftIndex = index - 1;
+        }
+
+        public void SetNeighbors(GridWorld world)
+        {
+            Up = world.GetSpaceFromWorldIndex(UpIndex);
+            UpRight = world.GetSpaceFromWorldIndex(UpRightIndex);
+            UpLeft = world.GetSpaceFromWorldIndex(UpLeftIndex);
+            Down = world.GetSpaceFromWorldIndex(DownIndex);
+            DownRight = world.GetSpaceFromWorldIndex(DownLeftIndex);
+            DownLeft = world.GetSpaceFromWorldIndex(DownRightIndex);
+            Right = world.GetSpaceFromWorldIndex(RightIndex);
+            Left = world.GetSpaceFromWorldIndex(LeftIndex);
         }
 
         public IEnumerable<GridSpace> GetListOfNeighborSpaces()
         {
-            var world = WorldConstants.World;
-
-            if (world == null)
-            {
-                return new List<GridSpace>();
-            }
-
             return new List<GridSpace>
             {
-                world.GetSpaceFromWorldIndex(Up),
-                world.GetSpaceFromWorldIndex(UpRight),
-                world.GetSpaceFromWorldIndex(UpLeft),
-                world.GetSpaceFromWorldIndex(Down),
-                world.GetSpaceFromWorldIndex(DownLeft),
-                world.GetSpaceFromWorldIndex(DownRight),
-                world.GetSpaceFromWorldIndex(Right),
-                world.GetSpaceFromWorldIndex(Left)
-            }.Where(x => x != null);
+                Up, UpRight, UpLeft,
+                Down, DownRight, DownLeft,
+                Right, Left
+            }.Where(x => x != null && !WorldConstants.PreviouslyDugSpaces.Contains(x.Index));
         }
     }
 }

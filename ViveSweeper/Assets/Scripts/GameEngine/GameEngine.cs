@@ -30,16 +30,14 @@ public class GameEngine : MonoBehaviour
             case WorldConstants.Difficulties.Expert:
                 World = new GridWorld(21);
                 break;
-            default:
+            case WorldConstants.Difficulties.Easy:
                 World = new GridWorld(9);
+                break;
+            default:
+                World = new GridWorld();
                 break;
         }
 
         WorldConstants.World = World;
-
-        World.GetSpaceFromWorldIndex(5).Dig();
-        //player = new Player();
-
     }
-
 }

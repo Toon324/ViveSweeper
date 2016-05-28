@@ -40,9 +40,10 @@ namespace Assets.Scripts.World.GridWorld
                 return;
 
             Interacting = true;
-
             HasQuestion = false;
             HasFlag = false;
+
+            SetColor(Color.gray);
         }
 
         public void PlantQuestionMark()
@@ -51,8 +52,9 @@ namespace Assets.Scripts.World.GridWorld
                 return;
 
             Interacting = true;
-
             HasQuestion = true;
+
+            SetColor(Color.white);
         }
 
         public void PlantFlag()
@@ -61,8 +63,9 @@ namespace Assets.Scripts.World.GridWorld
                 return;
 
             Interacting = true;
-
             HasFlag = true;
+
+            SetColor(Color.magenta);
         }
 
         public void Dig()

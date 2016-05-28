@@ -46,6 +46,27 @@ namespace Assets.Scripts.World.GridWorld
             DownRightIndex = DownIndex + 1;
             RightIndex = index + 1;
             LeftIndex = index - 1;
+
+            CheckForBadIndexes(index, rowSize);
+        }
+
+        public void CheckForBadIndexes(int index, int rowSize)
+        {
+            // Up and Down are already checked for in other places
+
+            if (index % rowSize == 0)
+            {
+                LeftIndex = -1;
+                UpLeftIndex = -1;
+                DownLeftIndex = -1;
+            }
+
+            if (index % rowSize == 8)
+            {
+                RightIndex = -1;
+                UpRightIndex = -1;
+                DownRightIndex = -1;
+            }
         }
 
         public void SetNeighbors(GridWorld world)

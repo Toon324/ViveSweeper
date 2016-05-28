@@ -100,7 +100,7 @@ namespace Assets.Scripts.World.GridWorld
 
         public bool HasWon()
         {
-            return World.All(x => x.HasBeenDug || x.IsMine);
+            return WorldConstants.PreviouslyDugSpaces.Count == TotalSize - (int)WorldConstants.CurrentDifficulty;
         }
 
         public GridSpace GetSpaceFromWorldIndex(int y)

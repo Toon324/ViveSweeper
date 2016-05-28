@@ -48,12 +48,8 @@ namespace Assets.Scripts.World.GridWorld
             LeftIndex = index - 1;
         }
 
-        public void SetNeighbors()
+        public void SetNeighbors(GridWorld world)
         {
-            var world = WorldConstants.World;
-
-            if (world == null) return;
-
             Up = world.GetSpaceFromWorldIndex(UpIndex);
             UpRight = world.GetSpaceFromWorldIndex(UpRightIndex);
             UpLeft = world.GetSpaceFromWorldIndex(UpLeftIndex);

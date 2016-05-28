@@ -47,8 +47,9 @@ namespace Assets.Scripts.World.GridWorld
 
             foreach (var space in World)
             {
-                // Prefetch spaces for performance
-                space.Neighbors.SetNeighbors();
+                // Prefetch spaces and mine Counts for performance
+                space.Neighbors.SetNeighbors(this);
+                space.NearbyMines = space.Neighbors.GetListOfNeighborSpaces().Count(x => x.IsMine);
             }
         }
 
@@ -99,7 +100,7 @@ namespace Assets.Scripts.World.GridWorld
 
         public bool HasWon()
         {
-            return World.Any(x => !x.IsMine);
+            return World.All(x => x.HasBeenDug || x.IsMine);
         }
 
         public GridSpace GetSpaceFromWorldIndex(int y)

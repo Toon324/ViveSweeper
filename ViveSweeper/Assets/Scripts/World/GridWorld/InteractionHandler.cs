@@ -57,8 +57,6 @@ namespace Assets.Scripts.World.GridWorld
             var neighbors = Space.Neighbors.GetListOfNeighborSpaces().Where(x => !x.HasBeenDug);
             var gridSpaces = neighbors as GridSpace[] ?? neighbors.ToArray();
 
-            Space.NearbyMines = gridSpaces.Count(x => x.IsMine);
-
             if (Space.NearbyMines > 0)
             {
                 // Display a number. For now, just show a new color

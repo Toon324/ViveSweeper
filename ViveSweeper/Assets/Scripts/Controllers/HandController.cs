@@ -143,7 +143,7 @@ public class HandController : MonoBehaviour
             {
                 GridSpace interactSpace = WorldConstants.World.GetSpaceFromWorldIndex(y);
 
-                if (interactSpace.HasFlag || interactSpace.HasQuestion)
+                if (interactSpace.HasMarker)
                     return;
 
                 //Grabbable curHolding = (Grabbable)toGrab.GetComponent("Grabbable");

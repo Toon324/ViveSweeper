@@ -14,10 +14,6 @@ namespace Assets.Scripts.World.GridWorld
 
         public bool IsMine { get; set; }
 
-        public bool HasFlag { get; set; }
-
-        public bool HasQuestion { get; set; }
-
         public bool HasMarker { get; set; }
 
         public int NearbyMines { get; set; }
@@ -37,8 +33,7 @@ namespace Assets.Scripts.World.GridWorld
 
         public void Grab()
         {
-            HasQuestion = false;
-            HasFlag = false;
+            HasMarker = false;
 
             SetColor(Color.gray);
         }
@@ -56,7 +51,7 @@ namespace Assets.Scripts.World.GridWorld
 
         public void Dig()
         {
-            if (HasFlag || HasQuestion || HasMarker)
+            if (HasMarker)
                 return;
 
             //Interacting = true;

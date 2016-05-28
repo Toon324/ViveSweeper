@@ -11,6 +11,14 @@ public class ShovelController : MonoBehaviour {
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
     private SteamVR_TrackedObject trackedObj;
 
+    SphereCollider sc;
+
+    [SerializeField]
+    private float colliderRadius;
+
+    [SerializeField]
+    private Vector3 colliderCenter;
+
     // Use this for initialization
     void Start () {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
@@ -18,17 +26,27 @@ public class ShovelController : MonoBehaviour {
 
     public void disable()
     {
+        if(sc != null)
+            Destroy(sc);
+
         shovel.SetActive(false);
     }
 
     public void enable()
     {
+        if (sc == null)
+        {
+            sc = gameObject.AddComponent<SphereCollider>();
+            sc.radius = colliderRadius;
+            sc.center = colliderCenter;
+            sc.isTrigger = true;
+        }
         shovel.SetActive(true);
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("Digging: " + collider.gameObject.name);
+        //Debug.Log("Digging: " + collider.gameObject.name);
 
         //DIG!
         int y;

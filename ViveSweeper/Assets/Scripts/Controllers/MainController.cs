@@ -30,11 +30,14 @@ public class MainController : MonoBehaviour {
     private ControllerType curContType = ControllerType.Shovel;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
 
         shovelC = (ShovelController)gameObject.GetComponent("ShovelController");
+        switchToShovelCont();
     }
+
 
     // Update is called once per frame
     void Update()

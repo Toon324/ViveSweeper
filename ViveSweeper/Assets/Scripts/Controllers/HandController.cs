@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.World;
+using Assets.Scripts.World.GridWorld;
+
 
 public class HandController : MonoBehaviour
 {
@@ -13,13 +16,28 @@ public class HandController : MonoBehaviour
 
     private bool holdingSomething;
 
-    private bool holdingHat; 
+    [SerializeField]
+    private Vector3 grabbedObjPos;
+    [SerializeField]
+    private Quaternion grabbedObjRot;
+
+    private SphereCollider handCollider;
+    [SerializeField]
+    private float handColliderRadius;
+    [SerializeField]
+    private Vector3 handColliderPos;
+
+    private BoxCollider grabbedCollider;
+    [SerializeField]
+    private Vector3 grabbedColliderSize;
+    [SerializeField]
+    private Vector3 grabbedColliderPos;
 
     // Use this for initialization
     void Start()
     {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
-        holdingHat = false;
+
     }
 
     // Update is called once per frame
@@ -37,14 +55,17 @@ public class HandController : MonoBehaviour
         if (controller.GetPressDown(triggerButton))
         {
             holdingSomething = true;
-            toGrab.transform.parent = this.transform;
 
-            if (toGrab.GetComponent("Hat") != null)
-            {
-                Debug.Log("Hat Detected!");
-                holdingHat = true;
-            }
-            
+            Rigidbody toChange = (Rigidbody)toGrab.GetComponent("Rigidbody");
+            toChange.useGravity = false;
+            toChange.isKinematic = true;
+
+            toGrab.transform.parent = this.transform;
+            toGrab.transform.localRotation = grabbedObjRot;
+            toGrab.transform.localPosition = grabbedObjPos;
+
+            switchToGrabbedCollider();
+
         }
 
         if (controller.GetPressUp(triggerButton))
@@ -58,6 +79,7 @@ public class HandController : MonoBehaviour
     {
         holdingSomething = false;
         toGrab = null;
+        switchToHandCollider();
     }
 
     private void drop()
@@ -65,7 +87,6 @@ public class HandController : MonoBehaviour
         holdingSomething = false;
 
         toGrab.transform.parent = null;
-        holdingHat = false;
         Rigidbody toChange = (Rigidbody)toGrab.GetComponent("Rigidbody");
         toChange.useGravity = true;
         toChange.isKinematic = false;
@@ -80,23 +101,62 @@ public class HandController : MonoBehaviour
         ang.y *= -1;
         ang.z *= -1;
         toChange.angularVelocity = ang;
+        toGrab = null;
+        switchToHandCollider();
+    }
+
+    public void enableController()
+    {
+        switchToHandCollider();
     }
 
     public void disableController()
     {
         if (holdingSomething)
             drop();
+
+        Destroy(handCollider);
+        Destroy(grabbedCollider);
+
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        if (holdingSomething)
-            return;
+        if (!holdingSomething)
+        {
+            if (collider.gameObject.GetComponent("Grabbable") == null)
+                return;
 
-        if (toGrab.GetComponent("Grabbable") == null)
+            toGrab = collider.gameObject;
             return;
+        }
 
-        toGrab = collider.gameObject;
+        //Plant Marker
+        int y;
+
+        string name = collider.gameObject.name;
+
+        Debug.Log("Attempting to parse/grab: " + name);
+
+        if (int.TryParse(name, out y))
+            if (isValidGridSpaceName(y))
+            {
+                GridSpace interactSpace = WorldConstants.World.GetSpaceFromWorldIndex(y);
+
+                if (interactSpace.HasFlag || interactSpace.HasQuestion)
+                    return;
+
+                //Grabbable curHolding = (Grabbable)toGrab.GetComponent("Grabbable");
+
+               // if (curHolding.isFlag)
+                interactSpace.PlantMarker(toGrab);
+                //else
+                //    interactSpace.PlantMarker()
+
+                controller.TriggerHapticPulse(500, Valve.VR.EVRButtonId.k_EButton_Axis0);
+                letGo();
+            }
+
     }
 
     void OnTriggerExit(Collider collider)
@@ -107,4 +167,36 @@ public class HandController : MonoBehaviour
         toGrab = null;
     }
 
+    private bool isValidGridSpaceName(int y)
+    {
+        return (y >= 0 && y <= WorldConstants.World.TotalSize);
+    }
+
+    private void switchToHandCollider()
+    {
+        if (grabbedCollider != null)
+            Destroy(grabbedCollider);
+
+        if(handCollider == null)
+        {
+            handCollider = gameObject.AddComponent<SphereCollider>();
+            handCollider.radius = handColliderRadius;
+            handCollider.center = handColliderPos;
+            handCollider.isTrigger = true;
+        }
+    }
+
+    private void switchToGrabbedCollider()
+    {
+        if (handCollider != null)
+            Destroy(handCollider);
+
+        if (grabbedCollider == null)
+        {
+            grabbedCollider = gameObject.AddComponent<BoxCollider>();
+            grabbedCollider.size = grabbedColliderSize;
+            grabbedCollider.center = grabbedColliderPos;
+            grabbedCollider.isTrigger = true;
+        }
+    }
 }

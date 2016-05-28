@@ -24,7 +24,9 @@ namespace Assets.Scripts.World.GridWorld
 
         protected NeighborSpaces Neighbors { get; set; }
 
-        protected bool Interacting { get; set; }
+        protected Vector3 flagPos = new Vector3(0,.52f,0);
+
+        //protected bool Interacting { get; set; }
         #endregion
 
         public GridSpace(GameObject space, int index, int worldSize)
@@ -32,16 +34,16 @@ namespace Assets.Scripts.World.GridWorld
             SpacePiece = space;
             Index = index;
             Neighbors = new NeighborSpaces(index, worldSize);
-            Interacting = false;
+            //Interacting = false;
             IsMine = false;
         }
 
         public void Grab()
         {
-            if (Interacting)
-                return;
+            //if (Interacting)
+            //    return;
 
-            Interacting = true;
+            //Interacting = true;
             HasQuestion = false;
             HasFlag = false;
 
@@ -50,43 +52,25 @@ namespace Assets.Scripts.World.GridWorld
 
         public void PlantMarker(GameObject marker)
         {
-            if (Interacting)
-                return;
+            //if (Interacting)
+            //    return;
 
-            Interacting = true;
+            //Interacting = true;
             HasMarker = true;
+
+            marker.transform.parent = SpacePiece.transform;
+            marker.transform.localPosition = flagPos;
+            marker.transform.rotation = Quaternion.Euler(0, 180, 0);
 
             SetColor(Color.blue);
         }
 
-        public void PlantQuestionMark()
-        {
-            if (Interacting)
-                return;
-
-            Interacting = true;
-            HasQuestion = true;
-
-            SetColor(Color.white);
-        }
-
-        public void PlantFlag()
-        {
-            if (Interacting)
-                return;
-
-            Interacting = true;
-            HasFlag = true;
-
-            SetColor(Color.magenta);
-        }
-
         public void Dig()
         {
-            if (Interacting || HasFlag || HasQuestion || HasMarker)
+            if (HasFlag || HasQuestion || HasMarker)
                 return;
 
-            Interacting = true;
+            //Interacting = true;
 
             if (IsMine)
             {
@@ -122,11 +106,6 @@ namespace Assets.Scripts.World.GridWorld
                 }
             }
 
-        }
-
-        public void DoneInteracting()
-        {
-            Interacting = false;
         }
 
         public Transform GetTransform()

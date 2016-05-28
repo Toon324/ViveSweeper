@@ -78,11 +78,23 @@ namespace Assets.Scripts.World.GridWorld
                 World[randomNumber].IsMine = true;
                 World[randomNumber].SetColor(Color.red);
             }
+            
         }
 
         public GridSpace GetSpaceFromWorldIndex(int y)
         {
-            return World[y];
+            try
+            {
+                if (y < 0 || y > TotalSize)
+                {
+                    return null;
+                }
+                return World[y];
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

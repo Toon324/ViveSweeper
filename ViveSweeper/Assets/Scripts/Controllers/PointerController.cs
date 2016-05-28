@@ -70,7 +70,7 @@ namespace Assets.Scripts.Controllers
                                 //     Debug.Log("DONE INTERACTING");
                             }
                             interactSpace = WorldConstants.World.GetSpaceFromWorldIndex(y);
-                            interactSpace.Interact();
+                            interactSpace.Dig();
                             controller.TriggerHapticPulse(500, Valve.VR.EVRButtonId.k_EButton_Axis0);
                         }
                 }

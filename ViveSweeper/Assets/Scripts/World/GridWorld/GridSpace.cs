@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.World;
+using UnityEngine;
 
 namespace Assets.Scripts.World.GridWorld
 {
-    public class GridSpace: IGridSpace
+    public class GridSpace
     {
         #region Properties
         public GameObject SpacePiece { get; set; }
@@ -14,6 +17,8 @@ namespace Assets.Scripts.World.GridWorld
         public bool HasFlag { get; set; }
 
         public bool HasQuestion { get; set; }
+
+        public int NearbyMines { get; set; }
 
         protected NeighborSpaces Neighbors { get; set; }
 
@@ -29,7 +34,41 @@ namespace Assets.Scripts.World.GridWorld
             IsMine = false;
         }
 
-        public void Interact()
+        public void Grab()
+        {
+            if (Interacting)
+                return;
+
+            Interacting = true;
+            HasQuestion = false;
+            HasFlag = false;
+
+            SetColor(Color.gray);
+        }
+
+        public void PlantQuestionMark()
+        {
+            if (Interacting)
+                return;
+
+            Interacting = true;
+            HasQuestion = true;
+
+            SetColor(Color.white);
+        }
+
+        public void PlantFlag()
+        {
+            if (Interacting)
+                return;
+
+            Interacting = true;
+            HasFlag = true;
+
+            SetColor(Color.magenta);
+        }
+
+        public void Dig()
         {
             if (Interacting)
                 return;
@@ -54,11 +93,26 @@ namespace Assets.Scripts.World.GridWorld
         private void EmptySpaceInteraction()
         {
             SetColor(Color.green);
+            var neighbors = Neighbors.GetListOfNeighborSpaces();
+            NearbyMines = neighbors.Count(x => x.IsMine);
+
+            if (NearbyMines > 0)
+            {
+                // Display a number. For now, just show a new color
+                SetColor(Color.yellow);
+            }
+            else
+            {
+                foreach (var space in neighbors)
+                {
+                    space.Dig(); // Can be guaranteed to not be a mine
+                }
+            }
+
         }
 
         public void DoneInteracting()
         {
-            SpacePiece.GetComponent<MeshRenderer>().material.color = Color.white; 
             Interacting = false;
         }
 
@@ -107,6 +161,28 @@ namespace Assets.Scripts.World.GridWorld
             DownRight = Down + 1;
             Right = index + 1;
             Left = index - 1;
+        }
+
+        public IEnumerable<GridSpace> GetListOfNeighborSpaces()
+        {
+            var world = WorldConstants.World;
+
+            if (world == null)
+            {
+                return new List<GridSpace>();
+            }
+
+            return new List<GridSpace>
+            {
+                world.GetSpaceFromWorldIndex(Up),
+                world.GetSpaceFromWorldIndex(UpRight),
+                world.GetSpaceFromWorldIndex(UpLeft),
+                world.GetSpaceFromWorldIndex(Down),
+                world.GetSpaceFromWorldIndex(DownLeft),
+                world.GetSpaceFromWorldIndex(DownRight),
+                world.GetSpaceFromWorldIndex(Right),
+                world.GetSpaceFromWorldIndex(Left)
+            }.Where(x => x != null);
         }
     }
 }

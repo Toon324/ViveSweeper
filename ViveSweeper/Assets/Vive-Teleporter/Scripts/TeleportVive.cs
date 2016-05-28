@@ -48,6 +48,32 @@ public class TeleportVive : MonoBehaviour {
 
     private Mesh PlaneMesh;
 
+    private bool leftControllerEnabled = false;
+    private bool rightControllerEnabled = false;
+
+    public void enableController(SteamVR_TrackedObject cont)
+    {
+        if (Controllers[0].index == cont.index)
+        {
+            leftControllerEnabled = true;
+        }
+        else if (Controllers[1].index == cont.index)
+        {
+            rightControllerEnabled = true;
+        }
+    }
+    public void disableController(SteamVR_TrackedObject cont)
+    {
+        if (Controllers[0].index == cont.index)
+        {
+            leftControllerEnabled = false;
+        }
+        else if (Controllers[1].index == cont.index)
+        {
+            rightControllerEnabled = false;
+        }
+    }
+
     void Start()
     {
         // Disable the pointer graphic (until the user holds down on the touchpad)
@@ -153,7 +179,7 @@ public class TeleportVive : MonoBehaviour {
                 {
                     // We have finished fading out - time to teleport!
                     Vector3 offset = OriginTransform.position - HeadTransform.position;
-                    offset.y = 0f;
+                    offset.y = 0;
                     OriginTransform.position = Pointer.SelectedPoint + offset;
                 }
 
@@ -226,9 +252,23 @@ public class TeleportVive : MonoBehaviour {
                 if (index == -1)
                     continue;
 
+                if((int)Controllers[0].index == index)
+                {
+                    if (!leftControllerEnabled)
+                        continue;
+                }
+                if ((int)Controllers[1].index == index)
+                {
+                    if (!rightControllerEnabled)
+                        continue;
+                }
+
                 var device = SteamVR_Controller.Input(index);
                 if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
                 {
+
+                    //Debug.Log("Pressing On device: " + index);
+
                     // Set active controller to this controller, and enable the parabolic pointer and visual indicators
                     // that the user can use to determine where they are able to teleport.
                     ActiveController = obj;

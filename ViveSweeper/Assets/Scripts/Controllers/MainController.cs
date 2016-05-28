@@ -18,25 +18,26 @@ public class MainController : MonoBehaviour {
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
     private SteamVR_TrackedObject trackedObj;
 
-    private PointerController pointerC;
-    private HandController handC;
+    private ShovelController shovelC;
+    //private PointerController pointerC;
+    //private HandController handC;
     [SerializeField] private TeleportVive teleportC;
-
-    //private teleporter teleportC;
 
     //Controller GUI
     [SerializeField] private TextMesh contText;
 
-    private enum ControllerType {Hand,Pointer,Teleport};
-    private ControllerType curContType = ControllerType.Pointer;
+    private enum ControllerType {Shovel,Teleport};
+    private ControllerType curContType = ControllerType.Shovel;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
 
-        pointerC = (PointerController)this.gameObject.GetComponent("PointerController");
-        handC = (HandController)this.gameObject.GetComponent("HandController");
+        shovelC = (ShovelController)gameObject.GetComponent("ShovelController");
+        switchToShovelCont();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -68,12 +69,12 @@ public class MainController : MonoBehaviour {
             //Up
             if (pos.y >= 0)
             {
-                switchToPointerCont();
+                switchToShovelCont();
             }
             //Down
             else
             {
-                switchToHandCont(); 
+                switchToTeleportCont();
             }
 
         }
@@ -88,59 +89,31 @@ public class MainController : MonoBehaviour {
             //Left
             else
             {
-                switchToTeleportCont();
+              
             }
         }
 
     }
 
-
-    private void switchToHandCont()
+    private void switchToShovelCont()
     {
-        //Disable other conts
-        disablePointerC();
-        teleportC.enabled = false;
-        handC.enabled = true;
-        curContType = ControllerType.Hand;
-        contText.text = "Grab Mode";
+        teleportC.disableController(trackedObj);
+        shovelC.enabled = true;
+        shovelC.enable();
+        contText.text = "";
     }
 
-    private void switchToPointerCont()
-    {
-        //Disable other conts
-        disableHandC();
-        teleportC.enabled = false;
-        enablePointerC();
-        contText.text = "Point Mode";
-    }
+
 
     private void switchToTeleportCont()
     {
-        disableHandC();
-        disablePointerC();
-        teleportC.enabled = true;
+        shovelC.disable();
+        shovelC.enabled = false;
+        teleportC.enableController(trackedObj);
         curContType = ControllerType.Teleport;
         contText.text = "Teleport Mode";
     }
 
-    private void enablePointerC()
-    {
-        pointerC.enablePointer();
-        pointerC.enabled = true;
-        curContType = ControllerType.Pointer;
-    }
-
-    private void disablePointerC()
-    {
-        pointerC.disablePointer();
-        pointerC.enabled = false;
-    }
-
-    private void disableHandC()
-    {
-        handC.disableController();
-        handC.enabled = false;
-    }
 
 
 

@@ -56,11 +56,14 @@ public class HandController : MonoBehaviour
         {
             holdingSomething = true;
 
-            Rigidbody toChange = (Rigidbody)toGrab.GetComponent("Rigidbody");
-            toChange.useGravity = false;
-            toChange.isKinematic = true;
+            Grabbable grabbed = (Grabbable)toGrab.GetComponent("Grabbable");
+            grabbed.grab(this);
 
-            toGrab.transform.parent = this.transform;
+            //Rigidbody toChange = (Rigidbody)toGrab.GetComponent("Rigidbody");
+            //toChange.useGravity = false;
+            //toChange.isKinematic = true;
+
+            toGrab.transform.parent = this.gameObject.transform;
             toGrab.transform.localRotation = grabbedObjRot;
             toGrab.transform.localPosition = grabbedObjPos;
 
@@ -70,14 +73,19 @@ public class HandController : MonoBehaviour
 
         if (controller.GetPressUp(triggerButton))
         {
-            drop();
+            if(holdingSomething)
+             drop();
         }
 
     }
 
     public void letGo()
     {
+
         holdingSomething = false;
+        Grabbable curHolding = (Grabbable)toGrab.GetComponent("Grabbable");
+        curHolding.drop();
+
         toGrab = null;
         switchToHandCollider();
     }
@@ -146,8 +154,10 @@ public class HandController : MonoBehaviour
                 if (interactSpace.HasMarker)
                     return;
 
-                //Grabbable curHolding = (Grabbable)toGrab.GetComponent("Grabbable");
+                Grabbable curHolding = (Grabbable)toGrab.GetComponent("Grabbable");
 
+                curHolding.Plant(interactSpace);
+                curHolding.drop();
                // if (curHolding.isFlag)
                 interactSpace.PlantMarker(toGrab);
                 //else

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.World.GridWorld;
 
 public class Grabbable : MonoBehaviour
 {
@@ -11,12 +12,22 @@ public class Grabbable : MonoBehaviour
     [SerializeField]
     public bool isFlag;
 
+    private GridSpace plantedSpace;
+    private bool isPlanted = false;
+
     public void grab(HandController cont)
     {
         if (beingHeld)
         {
             curHolding.letGo();
             return;
+        }
+
+        if(isPlanted)
+        {
+            plantedSpace.Grab();
+            plantedSpace = null;
+            isPlanted = false;
         }
 
         //Set Physics settings
@@ -26,6 +37,12 @@ public class Grabbable : MonoBehaviour
         curHolding = cont;
         beingHeld = true;
 
+    }
+
+    public void Plant(GridSpace space)
+    {
+        plantedSpace = space;
+        isPlanted = true;
     }
 
     public void drop()

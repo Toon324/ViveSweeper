@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GridWorld {
 
-    public static int size = 30;
+    public static int size = 9;
 
     public static int ysize = size * size;
 

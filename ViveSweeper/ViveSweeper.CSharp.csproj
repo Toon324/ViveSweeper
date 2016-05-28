@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\GameEngine\GameEngine.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\GridSpace.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\GridWorld.cs" />
+    <Compile Include="Assets\Scripts\World\GridWorld\NeighborSpaces.cs" />
     <Compile Include="Assets\Scripts\World\WorldConstants.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />

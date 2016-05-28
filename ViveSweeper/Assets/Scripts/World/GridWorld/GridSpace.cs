@@ -24,7 +24,6 @@ namespace Assets.Scripts.World.GridWorld
 
         protected NeighborSpaces Neighbors { get; set; }
 
-        protected bool Interacting { get; set; }
         #endregion
 
         public GridSpace(GameObject space, int index, int worldSize)
@@ -32,16 +31,11 @@ namespace Assets.Scripts.World.GridWorld
             SpacePiece = space;
             Index = index;
             Neighbors = new NeighborSpaces(index, worldSize);
-            Interacting = false;
             IsMine = false;
         }
 
         public void Grab()
         {
-            if (Interacting)
-                return;
-
-            Interacting = true;
             HasQuestion = false;
             HasFlag = false;
 
@@ -50,10 +44,6 @@ namespace Assets.Scripts.World.GridWorld
 
         public void PlantMarker(GameObject marker)
         {
-            if (Interacting)
-                return;
-
-            Interacting = true;
             HasMarker = true;
 
             SetColor(Color.blue);
@@ -61,10 +51,6 @@ namespace Assets.Scripts.World.GridWorld
 
         public void PlantQuestionMark()
         {
-            if (Interacting)
-                return;
-
-            Interacting = true;
             HasQuestion = true;
 
             SetColor(Color.white);
@@ -72,10 +58,6 @@ namespace Assets.Scripts.World.GridWorld
 
         public void PlantFlag()
         {
-            if (Interacting)
-                return;
-
-            Interacting = true;
             HasFlag = true;
 
             SetColor(Color.magenta);
@@ -83,11 +65,6 @@ namespace Assets.Scripts.World.GridWorld
 
         public void Dig()
         {
-            if (Interacting || HasFlag || HasQuestion || HasMarker)
-                return;
-
-            Interacting = true;
-
             if (IsMine)
             {
                 MineInteraction();
@@ -101,6 +78,7 @@ namespace Assets.Scripts.World.GridWorld
         private void MineInteraction()
         {
             SetColor(Color.black);
+            // Lose
         }
 
         private void EmptySpaceInteraction()
@@ -122,11 +100,10 @@ namespace Assets.Scripts.World.GridWorld
                 }
             }
 
-        }
-
-        public void DoneInteracting()
-        {
-            Interacting = false;
+            if (WorldConstants.World.HasWon())
+            {
+                // Win
+            }
         }
 
         public Transform GetTransform()
@@ -139,63 +116,5 @@ namespace Assets.Scripts.World.GridWorld
             SpacePiece.GetComponent<MeshRenderer>().material.color = color;
         }
 
-    }
-
-    public class NeighborSpaces
-    {
-        #region Properties
-        public int Up { get; set; }
-        public int UpRight { get; set; }
-        public int UpLeft { get; set; }
-        public int Down { get; set; }
-        public int DownRight { get; set; }
-        public int DownLeft { get; set; }
-        public int Right { get; set; }
-        public int Left { get; set; }
-        #endregion
-
-        public NeighborSpaces(int index, int worldSize)
-        {
-            SetNeighbors(index, worldSize);
-        }
-
-        public void SetNeighbors(int index, int worldSize)
-        {
-            if (index < 0)
-            {
-                return;
-            }
-
-            Up = index - worldSize;
-            UpRight = Up + 1;
-            UpLeft = Up - 1;
-            Down = index + worldSize;
-            DownLeft = Down - 1;
-            DownRight = Down + 1;
-            Right = index + 1;
-            Left = index - 1;
-        }
-
-        public IEnumerable<GridSpace> GetListOfNeighborSpaces()
-        {
-            var world = WorldConstants.World;
-
-            if (world == null)
-            {
-                return new List<GridSpace>();
-            }
-
-            return new List<GridSpace>
-            {
-                world.GetSpaceFromWorldIndex(Up),
-                world.GetSpaceFromWorldIndex(UpRight),
-                world.GetSpaceFromWorldIndex(UpLeft),
-                world.GetSpaceFromWorldIndex(Down),
-                world.GetSpaceFromWorldIndex(DownLeft),
-                world.GetSpaceFromWorldIndex(DownRight),
-                world.GetSpaceFromWorldIndex(Right),
-                world.GetSpaceFromWorldIndex(Left)
-            }.Where(x => x != null);
-        }
     }
 }

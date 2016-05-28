@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
@@ -81,12 +82,17 @@ namespace Assets.Scripts.World.GridWorld
             
         }
 
+        public bool HasWon()
+        {
+            return World.Any(x => !x.IsMine);
+        }
+
         public GridSpace GetSpaceFromWorldIndex(int y)
         {
             try
             {
                 if (y < 0 || y > TotalSize)
-                {
+                { 
                     return null;
                 }
                 return World[y];

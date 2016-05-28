@@ -69,6 +69,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Controllers\Grabbable.cs" />
     <Compile Include="Assets\Scripts\Controllers\HandController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MainController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PointerController.cs" />

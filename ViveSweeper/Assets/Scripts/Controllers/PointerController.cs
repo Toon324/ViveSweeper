@@ -64,7 +64,6 @@ namespace Assets.Scripts.Controllers
                     if (int.TryParse(name, out y))
                         if (isValidGridSpaceName(y))
                         {
-
                             interactSpace = WorldConstants.World.GetSpaceFromWorldIndex(y);
                             interactSpace.Dig();
                             controller.TriggerHapticPulse(500, Valve.VR.EVRButtonId.k_EButton_Axis0);

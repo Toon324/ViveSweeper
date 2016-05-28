@@ -20,20 +20,20 @@ public class MainController : MonoBehaviour {
 
     private ShovelController shovelC;
     //private PointerController pointerC;
-    //private HandController handC;
+    private HandController handC;
     [SerializeField] private TeleportVive teleportC;
 
     //Controller GUI
     [SerializeField] private TextMesh contText;
 
-    private enum ControllerType {Shovel,Teleport};
+    private enum ControllerType {Shovel,Teleport,Hand};
     private ControllerType curContType = ControllerType.Shovel;
 
     // Use this for initialization
     void Start()
     {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
-
+        handC = (HandController)gameObject.GetComponent("HandController");
         shovelC = (ShovelController)gameObject.GetComponent("ShovelController");
         switchToShovelCont();
     }
@@ -74,7 +74,7 @@ public class MainController : MonoBehaviour {
             //Down
             else
             {
-                switchToTeleportCont();
+                switchToHandCont();
             }
 
         }
@@ -89,7 +89,7 @@ public class MainController : MonoBehaviour {
             //Left
             else
             {
-              
+                switchToTeleportCont();
             }
         }
 
@@ -98,6 +98,8 @@ public class MainController : MonoBehaviour {
     private void switchToShovelCont()
     {
         teleportC.disableController(trackedObj);
+        handC.disableController();
+        handC.enabled = false;
         shovelC.enabled = true;
         shovelC.enable();
         contText.text = "";
@@ -109,12 +111,23 @@ public class MainController : MonoBehaviour {
     {
         shovelC.disable();
         shovelC.enabled = false;
+        handC.disableController();
+        handC.enabled = false;
         teleportC.enableController(trackedObj);
         curContType = ControllerType.Teleport;
         contText.text = "Teleport Mode";
     }
 
-
+    private void switchToHandCont()
+    {
+        shovelC.disable();
+        shovelC.enabled = false;
+        teleportC.disableController(trackedObj);
+        handC.enabled = true;
+        handC.enableController();
+        curContType = ControllerType.Hand;
+        contText.text = "Hand Mode";
+    }
 
 
 }

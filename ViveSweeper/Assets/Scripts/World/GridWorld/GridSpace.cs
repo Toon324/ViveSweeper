@@ -24,6 +24,7 @@ namespace Assets.Scripts.World.GridWorld
 
         protected NeighborSpaces Neighbors { get; set; }
 
+        protected Vector3 flagPos = new Vector3(0,.52f,0);
         #endregion
 
         public GridSpace(GameObject space, int index, int worldSize)
@@ -46,25 +47,20 @@ namespace Assets.Scripts.World.GridWorld
         {
             HasMarker = true;
 
+            marker.transform.parent = SpacePiece.transform;
+            marker.transform.localPosition = flagPos;
+            marker.transform.rotation = Quaternion.Euler(0, 180, 0);
+
             SetColor(Color.blue);
-        }
-
-        public void PlantQuestionMark()
-        {
-            HasQuestion = true;
-
-            SetColor(Color.white);
-        }
-
-        public void PlantFlag()
-        {
-            HasFlag = true;
-
-            SetColor(Color.magenta);
         }
 
         public void Dig()
         {
+            if (HasFlag || HasQuestion || HasMarker)
+                return;
+
+            //Interacting = true;
+
             if (IsMine)
             {
                 MineInteraction();

@@ -19,6 +19,8 @@ public class ShovelController : MonoBehaviour {
     [SerializeField]
     private Vector3 colliderCenter;
 
+    private bool isEnabled;
+
     // Use this for initialization
     void Start () {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
@@ -26,9 +28,9 @@ public class ShovelController : MonoBehaviour {
 
     public void disable()
     {
-        if(sc != null)
-            Destroy(sc);
+        Destroy(sc);
 
+        isEnabled = false;
         shovel.SetActive(false);
     }
 
@@ -42,10 +44,14 @@ public class ShovelController : MonoBehaviour {
             sc.isTrigger = true;
         }
         shovel.SetActive(true);
+        isEnabled = true;
     }
 
     void OnTriggerEnter(Collider collider)
     {
+        if (!isEnabled)
+            return;
+
         //Debug.Log("Digging: " + collider.gameObject.name);
 
         //DIG!
@@ -59,7 +65,8 @@ public class ShovelController : MonoBehaviour {
             if (isValidGridSpaceName(y))
             {
                 GridSpace interactSpace = WorldConstants.World.GetSpaceFromWorldIndex(y);
-                interactSpace.Interact();
+                interactSpace.Dig();
+                Debug.Log("DUG!");
                 controller.TriggerHapticPulse(500, Valve.VR.EVRButtonId.k_EButton_Axis0);
             }
     }

@@ -25,11 +25,11 @@ namespace Assets.Scripts.World.GridWorld
         protected Vector3 flagPos = new Vector3(0,.52f,0);
         #endregion
 
-        public GridSpace(GameObject space, int index, int worldSize)
+        public GridSpace(GameObject space, int index)
         {
             SpacePiece = space;
             Index = index;
-            Neighbors = new NeighborSpaces(index, worldSize);
+            Neighbors = new NeighborSpaces(index);
             IsMine = false;
             HasBeenDug = false;
         }
@@ -59,6 +59,8 @@ namespace Assets.Scripts.World.GridWorld
 
             HasBeenDug = true;
 
+            Debug.Log("Digging Self: " + Index);
+
             if (IsMine)
             {
                 MineInteraction();
@@ -67,8 +69,6 @@ namespace Assets.Scripts.World.GridWorld
             {
                 EmptySpaceInteraction();
             }
-
-            
         }
 
         private void MineInteraction()
@@ -94,6 +94,7 @@ namespace Assets.Scripts.World.GridWorld
             {
                 foreach (var space in gridSpaces)
                 {
+                    Debug.Log("Auto Digging: " + space.Index);
                     space.Dig(); // Can be guaranteed to not be a mine
                 }
             }

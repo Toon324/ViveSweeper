@@ -16,17 +16,19 @@ namespace Assets.Scripts.World.GridWorld
         public int Left { get; set; }
         #endregion
 
-        public NeighborSpaces(int index, int worldSize)
+        public NeighborSpaces(int index)
         {
-            SetNeighbors(index, worldSize);
+            SetNeighbors(index);
         }
 
-        public void SetNeighbors(int index, int worldSize)
+        public void SetNeighbors(int index)
         {
             if (index < 0)
             {
                 return;
             }
+
+            var worldSize = WorldConstants.World.Size;
 
             Up = index - worldSize;
             UpRight = Up + 1;

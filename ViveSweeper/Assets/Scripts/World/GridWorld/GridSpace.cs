@@ -57,10 +57,17 @@ namespace Assets.Scripts.World.GridWorld
         {
             InteractionHandler.Dig();
 
+            if (HasMarker)
+                return;
+
             if(NearbyMines != 0)
             {
                 NumDisplay.text = "" + NearbyMines;
             }
+
+            if (IsMine)
+                NumDisplay.text = "!";
+
             SpacePiece.transform.DetachChildren();
             GameObject engineObj = GameObject.Find("GameEngine");
             GameEngine engine = (GameEngine)engineObj.GetComponent("GameEngine");
@@ -75,7 +82,8 @@ namespace Assets.Scripts.World.GridWorld
 
         public void SetColor(Color color)
         {
-            //SpacePiece.GetComponent<MeshRenderer>().material.color = color;
+            if(SpacePiece != null)
+                SpacePiece.GetComponent<MeshRenderer>().material.color = color;
         }
 
         public override string ToString()

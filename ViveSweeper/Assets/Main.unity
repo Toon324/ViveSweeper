@@ -3145,8 +3145,8 @@ MonoBehaviour:
   handColliderPos: {x: 0, y: 0, z: 0.03}
   grabbedColliderSize: {x: 0.02, y: 0.02, z: 0.02}
   grabbedColliderPos: {x: 0, y: 0, z: -0.2}
-  flagPrefab: {fileID: 1000011273344526, guid: 6ea154be26b2b6048ace94209544ba04, type: 2}
-  qPrefab: {fileID: 1000013199453528, guid: 2e34b83b39aaf1d4d98973f4dc4f2043, type: 2}
+  flagPrefab: {fileID: 100066, guid: e2c16daf93ee21f40bb9d9aeba2d2429, type: 3}
+  qPrefab: {fileID: 100066, guid: ea5533c3a3d30bd4ab6c13ec53453a3d, type: 3}
 --- !u!114 &2041404195
 MonoBehaviour:
   m_ObjectHideFlags: 0

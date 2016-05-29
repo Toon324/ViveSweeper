@@ -33,11 +33,18 @@ public class HandController : MonoBehaviour
     [SerializeField]
     private Vector3 grabbedColliderPos;
 
+    private bool inFlagSpawner = false;
+    private bool inQSpawner = false;
+
+    [SerializeField]
+    private GameObject flagPrefab;
+    [SerializeField]
+    private GameObject qPrefab;
+
     // Use this for initialization
     void Start()
     {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
-
     }
 
     // Update is called once per frame
@@ -47,6 +54,44 @@ public class HandController : MonoBehaviour
         {
             Debug.Log("Controller not initialized.");
             return;
+        }
+
+        if (inFlagSpawner)
+        {
+            if (controller.GetPressDown(triggerButton))
+            {
+                toGrab = Instantiate(flagPrefab);
+                holdingSomething = true;
+
+                Grabbable grabbed = (Grabbable)toGrab.GetComponent("Grabbable");
+                grabbed.grab(this);
+
+                toGrab.transform.parent = this.gameObject.transform;
+                toGrab.transform.localRotation = grabbedObjRot;
+                toGrab.transform.localPosition = grabbedObjPos;
+
+                switchToGrabbedCollider();
+                return;
+            }
+        }
+
+        if (inQSpawner)
+        {
+            if (controller.GetPressDown(triggerButton))
+            {
+                toGrab = Instantiate(qPrefab);
+                holdingSomething = true;
+
+                Grabbable grabbed = (Grabbable)toGrab.GetComponent("Grabbable");
+                grabbed.grab(this);
+
+                toGrab.transform.parent = this.gameObject.transform;
+                toGrab.transform.localRotation = grabbedObjRot;
+                toGrab.transform.localPosition = grabbedObjPos;
+
+                switchToGrabbedCollider();
+                return;
+            }
         }
 
         if (toGrab == null)
@@ -132,6 +177,18 @@ public class HandController : MonoBehaviour
     {
         if (!holdingSomething)
         {
+            //Check if its a Spawner
+            if (collider.gameObject.name == "FlagSpawner")
+            {
+                inFlagSpawner = true;
+                return;
+            }
+            if (collider.gameObject.name == "QSpawner")
+            {
+                inQSpawner = true;
+                return;
+            }
+
             if (collider.gameObject.GetComponent("Grabbable") == null)
                 return;
 
@@ -171,6 +228,9 @@ public class HandController : MonoBehaviour
 
     void OnTriggerExit(Collider collider)
     {
+        inQSpawner = false;
+        inFlagSpawner = false;
+
         if (holdingSomething)
             return;
 

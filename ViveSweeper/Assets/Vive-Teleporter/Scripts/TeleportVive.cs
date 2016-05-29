@@ -179,7 +179,7 @@ public class TeleportVive : MonoBehaviour {
                 {
                     // We have finished fading out - time to teleport!
                     Vector3 offset = OriginTransform.position - HeadTransform.position;
-                    offset.y = 1.2f;
+                    offset.y = .5f;
                     OriginTransform.position = Pointer.SelectedPoint + offset;
                 }
 

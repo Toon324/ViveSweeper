@@ -23,7 +23,7 @@ namespace Assets.Scripts.World.GridWorld
 
             marker.transform.parent = Space.SpacePiece.transform;
             marker.transform.localPosition = Space.FlagPos;
-            marker.transform.rotation = Quaternion.Euler(0, 180, 0);
+            marker.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             Space.SetColor(Color.blue);
         }

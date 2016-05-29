@@ -24,7 +24,7 @@ namespace Assets.Scripts.World.GridWorld
 
         public InteractionHandler InteractionHandler { get; set; }
 
-        public Vector3 FlagPos = new Vector3(0,1.5f,0);
+        public Vector3 FlagPos = new Vector3(0,.35f,0);
         #endregion
 
         public GridSpace(GameObject space, int index, int rowSize)

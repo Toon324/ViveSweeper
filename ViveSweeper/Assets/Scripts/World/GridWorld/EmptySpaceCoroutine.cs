@@ -18,6 +18,7 @@ namespace Assets.Scripts.World.GridWorld
         public IEnumerator EmptySpace(GridSpace space)
         {
             space.SetColor(Color.green);
+            yield return new WaitForFixedUpdate();
             var neighbors = space.Neighbors.GetListOfNeighborSpaces().Where(x => !x.HasBeenDug);
             var gridSpaces = neighbors as GridSpace[] ?? neighbors.ToArray();
 
@@ -41,7 +42,6 @@ namespace Assets.Scripts.World.GridWorld
                 Debug.Log("Horray, you won!");
                 // Win
             }
-            yield return null;
         }
     }
 }

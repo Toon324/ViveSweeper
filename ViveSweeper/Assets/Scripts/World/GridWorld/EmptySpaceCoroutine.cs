@@ -10,6 +10,9 @@ namespace Assets.Scripts.World.GridWorld
     public class EmptySpaceCoroutine : MonoBehaviour
     {
 
+        [SerializeField]
+        private int frameDelay;
+
         public void StartDigging(GridSpace space)
         {
             StartCoroutine(EmptySpace(space));
@@ -18,7 +21,11 @@ namespace Assets.Scripts.World.GridWorld
         public IEnumerator EmptySpace(GridSpace space)
         {
             space.SetColor(Color.green);
-            yield return new WaitForFixedUpdate();
+
+            for(int i = 0; i < frameDelay;i++)
+                yield return new WaitForFixedUpdate();
+
+
             var neighbors = space.Neighbors.GetListOfNeighborSpaces().Where(x => !x.HasBeenDug);
             var gridSpaces = neighbors as GridSpace[] ?? neighbors.ToArray();
 

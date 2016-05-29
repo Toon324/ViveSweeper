@@ -19,7 +19,8 @@ public class Grabbable : MonoBehaviour
     {
         if (beingHeld)
         {
-            curHolding.letGo();
+            curHolding.objectTaken();
+            curHolding = cont;
             return;
         }
 

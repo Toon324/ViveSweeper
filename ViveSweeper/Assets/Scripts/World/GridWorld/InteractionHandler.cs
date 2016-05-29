@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 
 namespace Assets.Scripts.World.GridWorld
@@ -40,7 +42,12 @@ namespace Assets.Scripts.World.GridWorld
             }
             else
             {
-                EmptySpace();
+                var thread = new Thread(EmptySpace);
+
+                if (!thread.IsAlive)
+                {
+                    thread.Start();
+                }
             }
         }
 

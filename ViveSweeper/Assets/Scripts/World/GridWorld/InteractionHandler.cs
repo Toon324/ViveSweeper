@@ -42,12 +42,7 @@ namespace Assets.Scripts.World.GridWorld
             }
             else
             {
-                var thread = new Thread(EmptySpace);
-
-                if (!thread.IsAlive)
-                {
-                    thread.Start();
-                }
+                EmptySpace();
             }
         }
 
@@ -60,30 +55,8 @@ namespace Assets.Scripts.World.GridWorld
 
         public void EmptySpace()
         {
-            Space.SetColor(Color.green);
-            var neighbors = Space.Neighbors.GetListOfNeighborSpaces().Where(x => !x.HasBeenDug);
-            var gridSpaces = neighbors as GridSpace[] ?? neighbors.ToArray();
-
-            if (Space.NearbyMines > 0)
-            {
-                // Display a number. For now, just show a new color
-                Space.SetColor(Color.yellow);
-            }
-            else
-            {
-                foreach (var space in gridSpaces)
-                {
-                    Debug.Log(string.Format("Undug neighbors of {0}: {1}", Space.Index, space.ToString()) );
-                    Debug.Log("Auto Digging: " + space.Index);
-                    space.Dig(); // Can be guaranteed to not be a mine
-                }
-            }
-
-            if (WorldConstants.World.HasWon())
-            {
-                Debug.Log("Horray, you won!");
-                // Win
-            }
+            var coroutine = new EmptySpaceCoroutine();
+            coroutine.Start(Space);
         }
 
         public void Grab()

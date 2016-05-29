@@ -9,6 +9,9 @@ public class GameEngine : MonoBehaviour
     //static Player player;
     private static GridWorld World { get; set; }
 
+    //[SerializeField]
+    //private Color testColor;
+
     // Use this for initialization
     void Start()
     {

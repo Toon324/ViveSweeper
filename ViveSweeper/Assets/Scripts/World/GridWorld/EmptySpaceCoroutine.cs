@@ -10,7 +10,7 @@ namespace Assets.Scripts.World.GridWorld
     public class EmptySpaceCoroutine : MonoBehaviour
     {
 
-        public void Start(GridSpace space)
+        public void StartDigging(GridSpace space)
         {
             StartCoroutine(EmptySpace(space));
         }

@@ -40,4 +40,13 @@ public class GameEngine : MonoBehaviour
 
         WorldConstants.World = World;
     }
+
+
+
+    public static void DestroyObject(GameObject obj)
+    {
+        Destroy(obj);
+    }
+
+
 }

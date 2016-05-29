@@ -72,7 +72,7 @@ namespace Assets.Scripts.World.GridWorld
                 usedIndexes.Add(randomNumber);
 
                 World[randomNumber].IsMine = true;
-                World[randomNumber].SetColor(Color.red);
+                //World[randomNumber].SetColor(Color.red);
             }
         }
 

@@ -24,7 +24,10 @@ namespace Assets.Scripts.World.GridWorld
 
         public InteractionHandler InteractionHandler { get; set; }
 
-        public Vector3 FlagPos = new Vector3(0,.35f,0);
+        public Vector3 FlagPos = new Vector3(0, .35f, 0);
+
+        private TextMesh NumDisplay;
+
         #endregion
 
         public GridSpace(GameObject space, int index, int rowSize)
@@ -35,6 +38,9 @@ namespace Assets.Scripts.World.GridWorld
             IsMine = false;
             HasBeenDug = false;
             InteractionHandler = new InteractionHandler(this);
+
+            NumDisplay = space.GetComponentInChildren<TextMesh>();
+
         }
 
         public void Grab()
@@ -50,6 +56,23 @@ namespace Assets.Scripts.World.GridWorld
         public void Dig()
         {
             InteractionHandler.Dig();
+
+            if (HasMarker)
+                return;
+
+            if(NearbyMines != 0)
+            {
+                NumDisplay.text = "" + NearbyMines;
+            }
+
+            if (IsMine)
+                NumDisplay.text = "!";
+
+            SpacePiece.transform.DetachChildren();
+            GameObject engineObj = GameObject.Find("GameEngine");
+            GameEngine engine = (GameEngine)engineObj.GetComponent("GameEngine");
+            GameEngine.DestroyObject(SpacePiece);
+            SpacePiece = null;
         }
 
         public Transform GetTransform()
@@ -59,7 +82,8 @@ namespace Assets.Scripts.World.GridWorld
 
         public void SetColor(Color color)
         {
-            SpacePiece.GetComponent<MeshRenderer>().material.color = color;
+            if(SpacePiece != null)
+                SpacePiece.GetComponent<MeshRenderer>().material.color = color;
         }
 
         public override string ToString()

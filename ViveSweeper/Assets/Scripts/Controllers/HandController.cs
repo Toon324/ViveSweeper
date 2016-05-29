@@ -71,6 +71,7 @@ public class HandController : MonoBehaviour
                 toGrab.transform.localPosition = grabbedObjPos;
 
                 switchToGrabbedCollider();
+                inFlagSpawner = false;
                 return;
             }
         }
@@ -90,6 +91,7 @@ public class HandController : MonoBehaviour
                 toGrab.transform.localPosition = grabbedObjPos;
 
                 switchToGrabbedCollider();
+                inQSpawner = false;
                 return;
             }
         }
@@ -170,6 +172,8 @@ public class HandController : MonoBehaviour
 
     public void enableController()
     {
+        inFlagSpawner = false;
+        inQSpawner = false;
         switchToHandCollider();
     }
 

@@ -12,7 +12,7 @@ public class HandController : MonoBehaviour
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
     private SteamVR_TrackedObject trackedObj;
 
-    private static GameObject toGrab;
+    private GameObject toGrab;
 
     private bool holdingSomething;
 
@@ -135,9 +135,19 @@ public class HandController : MonoBehaviour
         switchToHandCollider();
     }
 
+    public void objectTaken()
+    {
+        holdingSomething = false;
+        toGrab = null;
+        switchToHandCollider();
+    }
+
     private void drop()
     {
         holdingSomething = false;
+
+        Grabbable curHolding = (Grabbable)toGrab.GetComponent("Grabbable");
+        curHolding.drop();
 
         toGrab.transform.parent = null;
         Rigidbody toChange = (Rigidbody)toGrab.GetComponent("Rigidbody");

@@ -31,7 +31,7 @@ namespace Assets.Scripts.World.GridWorld
 
             if (space.NearbyMines > 0)
             {
-                // Display a number. For now, just show a new color
+                //Display a number. For now, just show a new color
                 space.SetColor(Color.yellow);
             }
             else

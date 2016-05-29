@@ -13,8 +13,7 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>5.4.0b19</UnityVersion>
@@ -76,11 +75,11 @@
     <Compile Include="Assets\Scripts\Controllers\PointerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ShovelController.cs" />
     <Compile Include="Assets\Scripts\GameEngine\GameEngine.cs" />
+    <Compile Include="Assets\Scripts\World\GridWorld\EmptySpaceCoroutine.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\GridSpace.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\GridWorld.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\InteractionHandler.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\NeighborSpaces.cs" />
-    <Compile Include="Assets\Scripts\World\GridWorld\EmptySpaceCoroutine.cs" />
     <Compile Include="Assets\Scripts\World\WorldConstants.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
@@ -132,6 +131,7 @@
     <None Include="Assets\SteamVR\Resources\SteamVR_Overlay.shader" />
     <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
     <None Include="Assets\SteamVR\readme.txt" />
+    <None Include="Assets\Tool Starter Kit\ReadME.txt" />
     <None Include="Assets\Vive-Teleporter\LICENCE.txt" />
     <None Include="Assets\Vive-Teleporter\README.txt" />
     <None Include="Assets\Vive-Teleporter\Shader\FadeBlack.shader" />

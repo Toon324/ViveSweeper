@@ -117,6 +117,7 @@
     <None Include="Assets\SteamVR\Resources\SteamVR_Overlay.shader" />
     <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
     <None Include="Assets\SteamVR\readme.txt" />
+    <None Include="Assets\Tool Starter Kit\ReadME.txt" />
     <None Include="Assets\Vive-Teleporter\LICENCE.txt" />
     <None Include="Assets\Vive-Teleporter\README.txt" />
     <None Include="Assets\Vive-Teleporter\Shader\FadeBlack.shader" />

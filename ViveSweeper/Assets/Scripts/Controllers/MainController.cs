@@ -19,9 +19,9 @@ public class MainController : MonoBehaviour {
     private SteamVR_TrackedObject trackedObj;
 
     private ShovelController shovelC;
-    //private PointerController pointerC;
     private HandController handC;
     [SerializeField] private TeleportVive teleportC;
+    [SerializeField] private GameObject miniMap;
 
     //Controller GUI
     [SerializeField] private TextMesh contText;
@@ -35,7 +35,7 @@ public class MainController : MonoBehaviour {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
         handC = (HandController)gameObject.GetComponent("HandController");
         shovelC = (ShovelController)gameObject.GetComponent("ShovelController");
-        switchToShovelCont();
+        switchToHandCont();
     }
 
 
@@ -84,7 +84,7 @@ public class MainController : MonoBehaviour {
             //RightIndex
             if(pos.x >= 0)
             {
-
+                switchToMiniMap();
             }
             //LeftIndex
             else
@@ -97,6 +97,7 @@ public class MainController : MonoBehaviour {
 
     private void switchToShovelCont()
     {
+        miniMap.SetActive(false);
         teleportC.disableController(trackedObj);
         handC.disableController();
         handC.enabled = false;
@@ -105,10 +106,20 @@ public class MainController : MonoBehaviour {
         contText.text = "";
     }
 
-
+    private void switchToMiniMap()
+    {
+        teleportC.disableController(trackedObj);
+        handC.disableController();
+        handC.enabled = false;
+        shovelC.disable();
+        shovelC.enabled = false;
+        contText.text = "";
+        miniMap.SetActive(true);
+    }
 
     private void switchToTeleportCont()
     {
+        miniMap.SetActive(false);
         shovelC.disable();
         shovelC.enabled = false;
         handC.disableController();
@@ -120,6 +131,7 @@ public class MainController : MonoBehaviour {
 
     private void switchToHandCont()
     {
+        miniMap.SetActive(false);
         shovelC.disable();
         shovelC.enabled = false;
         teleportC.disableController(trackedObj);

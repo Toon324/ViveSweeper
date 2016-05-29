@@ -56,7 +56,7 @@ namespace Assets.Scripts.World.GridWorld
         public void EmptySpace()
         {
             var engine = GameObject.Find("GameEngine");
-            var obj = (EmptySpaceCoroutine)engine.GetComponent("EmptySpaceRoutine");
+            var obj = (EmptySpaceCoroutine)engine.GetComponent("EmptySpaceCoroutine");
             obj.StartDigging(Space);
         }
 

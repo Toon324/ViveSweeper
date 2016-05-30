@@ -33,6 +33,8 @@ public class MainController : MonoBehaviour {
     void Start()
     {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
+
+
         handC = (HandController)gameObject.GetComponent("HandController");
         shovelC = (ShovelController)gameObject.GetComponent("ShovelController");
         switchToHandCont();

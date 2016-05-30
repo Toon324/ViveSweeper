@@ -21,7 +21,7 @@ namespace Assets.Scripts.World.GridWorld
 
             Instantiate(
                 WorldConstants.MinePrefab,
-                new Vector3(spaceTransform.x, spaceTransform.y - .97003f, spaceTransform.z - .97033f),
+                new Vector3(spaceTransform.x, -.88f, spaceTransform.z),
                 Quaternion.identity);
 
             StartCoroutine(Explosion(spaceTransform));

@@ -48,18 +48,13 @@ namespace Assets.Scripts.World.GridWorld
 
         private void MineInteraction()
         {
-            var spaceTransform = Space.GetTransform().localPosition;
-            var mine = (GameObject)
-                    UnityEngine.Object.Instantiate(
-                        WorldConstants.MinePrefab,
-                        new Vector3(spaceTransform.x, spaceTransform.y, spaceTransform.z),
-                        Quaternion.identity);
+            var obj = (MineCoroutine) GetComponentFromEngine("MineCoroutine");
+            obj.StartExplosion(Space);
         }
 
         public void EmptySpace()
         {
-            var engine = GameObject.Find("GameEngine");
-            var obj = (EmptySpaceCoroutine)engine.GetComponent("EmptySpaceCoroutine");
+            var obj = (EmptySpaceCoroutine)GetComponentFromEngine("EmptySpaceCoroutine");
             obj.StartDigging(Space);
         }
 
@@ -71,6 +66,13 @@ namespace Assets.Scripts.World.GridWorld
                 Space.SetColor(Color.gray);
             else
                 Space.SetColor(Color.red);
+        }
+
+        private Component GetComponentFromEngine(string name)
+        {
+            var engine = GameObject.Find("GameEngine");
+
+            return engine == null ? null : engine.GetComponent(name);
         }
     }
 }

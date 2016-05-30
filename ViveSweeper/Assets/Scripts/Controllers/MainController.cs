@@ -26,8 +26,8 @@ public class MainController : MonoBehaviour {
     //Controller GUI
     [SerializeField] private TextMesh contText;
 
-    private enum ControllerType {Shovel,Teleport,Hand};
-    private ControllerType curContType = ControllerType.Shovel;
+    private enum ControllerType {Shovel,Teleport,Hand,MiniMap};
+    private ControllerType curContType = ControllerType.Hand;
 
     // Use this for initialization
     void Start()
@@ -50,7 +50,7 @@ public class MainController : MonoBehaviour {
 
         //Debug.Log("updating...");
 
-        if (controller.GetPress(touchPad))
+        if (controller.GetPressDown(touchPad))
         {
             updateTouchPad(controller.GetAxis(ax0));
         }
@@ -69,12 +69,15 @@ public class MainController : MonoBehaviour {
             //UpIndex
             if (pos.y >= 0)
             {
-                switchToShovelCont();
+                if (curContType == ControllerType.Shovel)
+                    switchToHandCont();
+                else
+                    switchToShovelCont();
             }
             //DownIndex
             else
             {
-                switchToHandCont();
+                    switchToHandCont();
             }
 
         }
@@ -84,12 +87,18 @@ public class MainController : MonoBehaviour {
             //RightIndex
             if(pos.x >= 0)
             {
-                switchToMiniMap();
+                if (curContType == ControllerType.MiniMap)
+                    switchToHandCont();
+                else
+                    switchToMiniMap();
             }
             //LeftIndex
             else
             {
-                switchToTeleportCont();
+                if (curContType == ControllerType.Teleport)
+                    switchToHandCont();
+                else
+                    switchToTeleportCont();
             }
         }
 
@@ -104,6 +113,7 @@ public class MainController : MonoBehaviour {
         shovelC.enabled = true;
         shovelC.enable();
         contText.text = "";
+        curContType = ControllerType.Shovel;
     }
 
     private void switchToMiniMap()
@@ -114,6 +124,7 @@ public class MainController : MonoBehaviour {
         shovelC.disable();
         shovelC.enabled = false;
         contText.text = "";
+        curContType = ControllerType.MiniMap;
         miniMap.SetActive(true);
     }
 

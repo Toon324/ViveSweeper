@@ -15,6 +15,11 @@ public class Grabbable : MonoBehaviour
     private GridSpace plantedSpace;
     private bool isPlanted = false;
 
+    [SerializeField]
+    private float DeleteTime;
+
+    private float deleteTimer;
+
     public void grab(HandController cont)
     {
         if (beingHeld)
@@ -50,6 +55,22 @@ public class Grabbable : MonoBehaviour
     {
         beingHeld = false;
         curHolding = null;
+
+        deleteTimer = DeleteTime;
+    }
+
+    void Update()
+    {
+
+        if (beingHeld || isPlanted)
+            return;
+
+        deleteTimer -= Time.deltaTime;
+
+
+        if (deleteTimer <= 0)
+            Destroy(this.gameObject);
+
     }
 
 

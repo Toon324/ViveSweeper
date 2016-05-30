@@ -28,6 +28,16 @@ namespace Assets.Scripts.World.GridWorld
 
         private TextMesh NumDisplay;
 
+        private Color oneColor = new Color(81, 168, 255);
+        private Color twoColor = new Color(33,203,48);
+        private Color threeColor = new Color(204, 0, 0);
+        private Color fourColor = new Color(0, 9, 178);
+        private Color fiveColor = new Color(120, 4, 4);
+        private Color sixColor = new Color(96, 235, 255);
+        private Color sevenColor = new Color(145, 145, 145);
+        private Color eightColor = new Color(0, 0, 0);
+
+
         #endregion
 
         public GridSpace(GameObject space, int index, int rowSize)
@@ -63,6 +73,25 @@ namespace Assets.Scripts.World.GridWorld
             if(NearbyMines != 0)
             {
                 NumDisplay.text = "" + NearbyMines;
+
+                if (NearbyMines == 1)
+                    NumDisplay.color = oneColor;
+                else if (NearbyMines == 2)
+                    NumDisplay.color = twoColor;
+                else if (NearbyMines == 3)
+                    NumDisplay.color = threeColor;
+                else if (NearbyMines == 4)
+                    NumDisplay.color = fourColor;
+                else if (NearbyMines == 5)
+                    NumDisplay.color = fiveColor;
+                else if (NearbyMines == 6)
+                    NumDisplay.color = sixColor;
+                else if (NearbyMines == 7)
+                    NumDisplay.color = sevenColor;
+                else if (NearbyMines == 8)
+                    NumDisplay.color = eightColor;
+
+
             }
 
             if (IsMine)

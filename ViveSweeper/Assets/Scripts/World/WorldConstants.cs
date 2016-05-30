@@ -16,6 +16,8 @@ namespace Assets.Scripts.World
 
         public static List<int> PreviouslyDugSpaces = new List<int>();
 
+        public static GameObject MinePrefab { get; set; }
+
         public static void LoadObjects()
         {
             GridSpace = Resources.Load<GameObject>("GridSpace");

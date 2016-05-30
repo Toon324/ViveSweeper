@@ -9,11 +9,14 @@ public class GameEngine : MonoBehaviour
     //static Player player;
     private static GridWorld World { get; set; }
 
+    [SerializeField] private GameObject MinePrefab;
+
     // Use this for initialization
     void Start()
     {
-
         WorldConstants.LoadObjects();
+
+        WorldConstants.MinePrefab = MinePrefab;
 
         WorldConstants.CurrentDifficulty = WorldConstants.Difficulties.Easy;
 

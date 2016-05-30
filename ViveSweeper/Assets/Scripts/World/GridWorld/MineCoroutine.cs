@@ -15,16 +15,13 @@ namespace Assets.Scripts.World.GridWorld
         [SerializeField]
         private GameObject _explosionPrefab;
 
-        [SerializeField]
-        private GameObject _explosionSoundsPrefab;
-
         public void StartExplosion(GridSpace space)
         {
             var spaceTransform = space.GetTransform().localPosition;
 
             Instantiate(
                 WorldConstants.MinePrefab,
-                new Vector3(spaceTransform.x, spaceTransform.y, spaceTransform.z),
+                new Vector3(spaceTransform.x, spaceTransform.y - .97003f, spaceTransform.z - .97033f),
                 Quaternion.identity);
 
             StartCoroutine(Explosion(spaceTransform));
@@ -39,11 +36,6 @@ namespace Assets.Scripts.World.GridWorld
 
             Instantiate(
                 _explosionPrefab,
-                location,
-                Quaternion.identity);
-
-            Instantiate(
-                _explosionSoundsPrefab,
                 location,
                 Quaternion.identity);
         }

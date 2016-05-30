@@ -48,9 +48,12 @@ namespace Assets.Scripts.World.GridWorld
 
         private void MineInteraction()
         {
-            Space.SetColor(Color.black);
-            // Lose
-            Debug.Log("BOOM, you have lost");
+            var spaceTransform = Space.GetTransform().localPosition;
+            var mine = (GameObject)
+                    UnityEngine.Object.Instantiate(
+                        WorldConstants.MinePrefab,
+                        new Vector3(spaceTransform.x, spaceTransform.y, spaceTransform.z),
+                        Quaternion.identity);
         }
 
         public void EmptySpace()

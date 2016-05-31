@@ -28,14 +28,14 @@ namespace Assets.Scripts.World.GridWorld
 
         private TextMesh NumDisplay;
 
-        private Color oneColor = new Color(81, 168, 255);
-        private Color twoColor = new Color(33,203,48);
-        private Color threeColor = new Color(204, 0, 0);
-        private Color fourColor = new Color(0, 9, 178);
-        private Color fiveColor = new Color(120, 4, 4);
-        private Color sixColor = new Color(96, 235, 255);
-        private Color sevenColor = new Color(145, 145, 145);
-        private Color eightColor = new Color(0, 0, 0);
+        private static Color oneColor = new Color(81f, 168f, 255f);
+        private static Color twoColor = new Color(33f,203f,48f);
+        private static Color threeColor = new Color(204, 0, 0);
+        private static Color fourColor = new Color(0, 9, 178);
+        private static Color fiveColor = new Color(120, 4, 4);
+        private static Color sixColor = new Color(96, 235, 255);
+        private static Color sevenColor = new Color(145, 145, 145);
+        private static Color eightColor = new Color(0, 0, 0);
 
 
         #endregion

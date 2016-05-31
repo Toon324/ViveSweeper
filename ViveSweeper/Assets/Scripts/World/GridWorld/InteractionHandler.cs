@@ -44,6 +44,15 @@ namespace Assets.Scripts.World.GridWorld
             {
                 EmptySpace();
             }
+
+            Space.SpacePiece.transform.DetachChildren();
+            Space.MinimapPiece.transform.DetachChildren();
+
+            GameEngine.DestroyObject(Space.SpacePiece);
+            Space.SpacePiece = null;
+
+            GameEngine.DestroyObject(Space.MinimapPiece);
+            Space.MinimapPiece = null;
         }
 
         private void MineInteraction()

@@ -44,7 +44,7 @@ namespace Assets.Scripts.World.GridWorld
             InteractionHandler = new InteractionHandler(this);
 
             NumDisplay = space.GetComponentInChildren<TextMesh>();
-            NumDisplay = minimap.GetComponentInChildren<TextMesh>();
+            MinimapNumDisplay = minimap.GetComponentInChildren<TextMesh>();
         }
 
         public void Grab()

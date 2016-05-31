@@ -87,17 +87,6 @@ namespace Assets.Scripts.World.GridWorld
                 }
             }
 
-            //space.SpacePiece.transform.DetachChildren();
-            //GameObject engineObj = GameObject.Find("GameEngine");
-            //GameEngine engine = (GameEngine)engineObj.GetComponent("GameEngine");
-            //GameEngine.DestroyObject(space.SpacePiece);
-
-            Destroy(space.SpacePiece);
-            space.SpacePiece = null;
-
-            Destroy(space.MinimapPiece);
-            space.MinimapPiece = null;
-
             if (WorldConstants.World.HasWon())
             {
                 Debug.Log("Horray, you won!");

@@ -88,11 +88,13 @@
     <Compile Include="Assets\Detonator Explosion Framework\System\DetonatorSpray.cs" />
     <Compile Include="Assets\Detonator Explosion Framework\TestScene\DetonatorTest.cs" />
     <Compile Include="Assets\Detonator Explosion Framework\TestScene\TouchToMouse.cs" />
+    <Compile Include="Assets\Scripts\ConfettiFollower.cs" />
     <Compile Include="Assets\Scripts\Controllers\Grabbable.cs" />
     <Compile Include="Assets\Scripts\Controllers\HandController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MainController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PointerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ShovelController.cs" />
+    <Compile Include="Assets\Scripts\GameEngine\EndGameHandler.cs" />
     <Compile Include="Assets\Scripts\GameEngine\GameEngine.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\EmptySpaceCoroutine.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\GridSpace.cs" />

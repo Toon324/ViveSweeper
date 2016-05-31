@@ -67,11 +67,11 @@ namespace Assets.Scripts.World.GridWorld
             return SpacePiece.transform;
         }
 
-        public void SetColor(Color color)
-        {
-            if(SpacePiece != null)
-                SpacePiece.GetComponent<MeshRenderer>().material.color = color;
-        }
+        //public void SetColor(Color color)
+        //{
+        //    if(SpacePiece != null)
+        //        SpacePiece.GetComponent<MeshRenderer>().material.color = color;
+        //}
 
         public override string ToString()
         {

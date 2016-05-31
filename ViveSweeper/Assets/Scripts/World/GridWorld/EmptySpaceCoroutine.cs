@@ -11,6 +11,9 @@ namespace Assets.Scripts.World.GridWorld
     {
 
         [SerializeField]
+        private EndGameHandler endGameHandler;
+
+        [SerializeField]
         private int frameDelay;
 
         private static Color oneColor = new Color(81f, 168f, 255f);
@@ -90,6 +93,7 @@ namespace Assets.Scripts.World.GridWorld
             if (WorldConstants.World.HasWon())
             {
                 Debug.Log("Horray, you won!");
+                endGameHandler.WonGame();
                 // Win
             }
         }

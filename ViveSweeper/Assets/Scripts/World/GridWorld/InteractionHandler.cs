@@ -25,7 +25,7 @@ namespace Assets.Scripts.World.GridWorld
             marker.transform.localPosition = Space.FlagPos;
             marker.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-            Space.SetColor(Color.blue);
+            //Space.SetColor(Color.blue);
         }
 
         public void Dig()
@@ -57,7 +57,7 @@ namespace Assets.Scripts.World.GridWorld
 
         private void MineInteraction()
         {
-            Space.NumDisplay.text = "!";
+            //Space.NumDisplay.text = "!";
             var obj = (MineCoroutine) GetComponentFromEngine("MineCoroutine");
             obj.StartExplosion(Space);
         }
@@ -71,11 +71,12 @@ namespace Assets.Scripts.World.GridWorld
         public void Grab()
         {
             Space.HasMarker = false;
-
+            /*
             if (!Space.IsMine)
                 Space.SetColor(Color.gray);
             else
                 Space.SetColor(Color.red);
+            */
         }
 
         private Component GetComponentFromEngine(string name)

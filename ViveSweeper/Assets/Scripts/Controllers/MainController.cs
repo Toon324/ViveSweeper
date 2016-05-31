@@ -29,6 +29,8 @@ public class MainController : MonoBehaviour {
     [SerializeField]
     private GameObject teleportObj;
 
+    [SerializeField]
+    private GameObject handObj;
   
     private enum ControllerType {Shovel,Teleport,Hand};
     private ControllerType curContType = ControllerType.Hand;
@@ -126,6 +128,7 @@ public class MainController : MonoBehaviour {
         teleportObj.SetActive(false);
         teleportC.disableController(trackedObj);
         handC.disableController();
+        handObj.SetActive(false);
         handC.enabled = false;
         shovelC.enabled = true;
         shovelC.enable();
@@ -145,6 +148,7 @@ public class MainController : MonoBehaviour {
         shovelC.enabled = false;
         handC.disableController();
         handC.enabled = false;
+        handObj.SetActive(false);
         teleportC.enableController(trackedObj);
         teleportObj.SetActive(true);
         curContType = ControllerType.Teleport;
@@ -159,6 +163,7 @@ public class MainController : MonoBehaviour {
         teleportC.disableController(trackedObj);
         handC.enabled = true;
         handC.enableController();
+        handObj.SetActive(true);
         curContType = ControllerType.Hand;
         touchPadGUI.sprite = touchpadNoneSprite;
     }

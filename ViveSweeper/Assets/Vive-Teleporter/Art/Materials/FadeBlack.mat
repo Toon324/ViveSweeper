@@ -84,7 +84,7 @@ Material:
       second: 0
     - first:
         name: _Fade
-      second: 0.045926332
+      second: 0.0063095093
     - first:
         name: _Glossiness
       second: 0.5

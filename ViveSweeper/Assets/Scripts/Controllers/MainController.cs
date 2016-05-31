@@ -135,8 +135,8 @@ public class MainController : MonoBehaviour {
 
     private void toggleMiniMap()
     {
-        miniMap.SetActive(miniMapOn);
         miniMapOn = !miniMapOn;
+        miniMap.SetActive(miniMapOn);
     }
 
     private void switchToTeleportCont()

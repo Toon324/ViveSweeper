@@ -10,6 +10,8 @@ namespace Assets.Scripts.World.GridWorld
         #region Properties
         public GameObject SpacePiece { get; set; }
 
+        public GameObject MinimapPiece { get; set; }
+
         public int Index { get; set; }
 
         public bool IsMine { get; set; }
@@ -26,23 +28,15 @@ namespace Assets.Scripts.World.GridWorld
 
         public Vector3 FlagPos = new Vector3(0, .35f, 0);
 
-        private TextMesh NumDisplay;
-
-        private static Color oneColor = new Color(81f, 168f, 255f);
-        private static Color twoColor = new Color(33f,203f,48f);
-        private static Color threeColor = new Color(204, 0, 0);
-        private static Color fourColor = new Color(0, 9, 178);
-        private static Color fiveColor = new Color(120, 4, 4);
-        private static Color sixColor = new Color(96, 235, 255);
-        private static Color sevenColor = new Color(145, 145, 145);
-        private static Color eightColor = new Color(0, 0, 0);
-
+        public TextMesh NumDisplay;
+        public TextMesh MinimapNumDisplay;
 
         #endregion
 
-        public GridSpace(GameObject space, int index, int rowSize)
+        public GridSpace(GameObject space, GameObject minimap, int index, int rowSize)
         {
             SpacePiece = space;
+            MinimapPiece = minimap;
             Index = index;
             Neighbors = new NeighborSpaces(index, rowSize);
             IsMine = false;
@@ -50,7 +44,7 @@ namespace Assets.Scripts.World.GridWorld
             InteractionHandler = new InteractionHandler(this);
 
             NumDisplay = space.GetComponentInChildren<TextMesh>();
-
+            NumDisplay = minimap.GetComponentInChildren<TextMesh>();
         }
 
         public void Grab()
@@ -66,42 +60,6 @@ namespace Assets.Scripts.World.GridWorld
         public void Dig()
         {
             InteractionHandler.Dig();
-
-            if (HasMarker)
-                return;
-
-            if(NearbyMines != 0)
-            {
-                NumDisplay.text = "" + NearbyMines;
-
-                if (NearbyMines == 1)
-                    NumDisplay.color = oneColor;
-                else if (NearbyMines == 2)
-                    NumDisplay.color = twoColor;
-                else if (NearbyMines == 3)
-                    NumDisplay.color = threeColor;
-                else if (NearbyMines == 4)
-                    NumDisplay.color = fourColor;
-                else if (NearbyMines == 5)
-                    NumDisplay.color = fiveColor;
-                else if (NearbyMines == 6)
-                    NumDisplay.color = sixColor;
-                else if (NearbyMines == 7)
-                    NumDisplay.color = sevenColor;
-                else if (NearbyMines == 8)
-                    NumDisplay.color = eightColor;
-
-
-            }
-
-            if (IsMine)
-                NumDisplay.text = "!";
-
-            SpacePiece.transform.DetachChildren();
-            GameObject engineObj = GameObject.Find("GameEngine");
-            GameEngine engine = (GameEngine)engineObj.GetComponent("GameEngine");
-            GameEngine.DestroyObject(SpacePiece);
-            SpacePiece = null;
         }
 
         public Transform GetTransform()

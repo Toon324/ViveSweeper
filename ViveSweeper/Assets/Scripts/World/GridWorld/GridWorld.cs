@@ -19,9 +19,13 @@ namespace Assets.Scripts.World.GridWorld
 
         public GameObject GridSpace { get; set; }
 
+        public GameObject MinimapSpace { get; set; }
+
         private const float WorldScaleFactor = 1f;
 
         private GameObject WorldObj { get; set; }
+
+        private GameObject MinimapWorldObj { get; set; }
 
         private const int TransformYPosition = -1;
 
@@ -30,10 +34,16 @@ namespace Assets.Scripts.World.GridWorld
             Size = size;
             World = new GridSpace[Size * Size];
             GridSpace = WorldConstants.GridSpace;
+            MinimapSpace = WorldConstants.MinimapSpace;
 
             WorldObj = new GameObject
             {
                 name = "World"
+            };
+
+            MinimapWorldObj = new GameObject
+            {
+                name = "MinimapWorld"
             };
 
             GenerateWorld();
@@ -89,12 +99,16 @@ namespace Assets.Scripts.World.GridWorld
                 var space = (GameObject)
                     UnityEngine.Object.Instantiate(GridSpace, new Vector3(xPos, TransformYPosition, zPos), Quaternion.identity);
 
-                space.name = "" + index;
+                var minimapSpace = (GameObject)
+                    UnityEngine.Object.Instantiate(MinimapSpace, new Vector3(xPos, -50, zPos), Quaternion.identity);
 
-                World[index] = new GridSpace(space, index, Size);
-                World[index].SetColor(Color.gray);
+                space.name = "" + index;
+                minimapSpace.name = "" + index;
+
+                World[index] = new GridSpace(space, minimapSpace, index, Size);
 
                 space.transform.parent = WorldObj.transform;
+                minimapSpace.transform.parent = MinimapWorldObj.transform;
             }
         }
 

@@ -8,6 +8,8 @@ namespace Assets.Scripts.World
         //World Objects
         public static GameObject GridSpace { get; set; }
 
+        public static GameObject MinimapSpace { get; set; }
+
         public static GridWorld.GridWorld World { get; set; }
 
         public enum Difficulties { Easy = 9, Medium = 39, Expert = 80}
@@ -21,6 +23,7 @@ namespace Assets.Scripts.World
         public static void LoadObjects()
         {
             GridSpace = Resources.Load<GameObject>("GridSpace");
+            MinimapSpace = Resources.Load<GameObject>("MinimapSquare");
         }
     }
 }

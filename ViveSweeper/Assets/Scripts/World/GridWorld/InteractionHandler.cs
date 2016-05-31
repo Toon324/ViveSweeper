@@ -48,6 +48,7 @@ namespace Assets.Scripts.World.GridWorld
 
         private void MineInteraction()
         {
+            Space.NumDisplay.text = "!";
             var obj = (MineCoroutine) GetComponentFromEngine("MineCoroutine");
             obj.StartExplosion(Space);
         }

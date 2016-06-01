@@ -103,15 +103,16 @@ public class TeleportVive : MonoBehaviour {
         Vector3 p0, p1, p2, p3;
         if (GetChaperoneBounds(out p0, out p1, out p2, out p3))
         {
-            RoomBorder.Points = new Vector3[][]
-            {
-                new Vector3[] {
+            BorderPointSet p = new BorderPointSet(new Vector3[] {
                     p0, p1, p2, p3, p0
-                }
+                });
+            RoomBorder.Points = new BorderPointSet[]
+            {
+                p
             };
-        }   
-            
+        }
 
+        RoomBorder.enabled = false;
     }
 
     /// \brief Requests the chaperone boundaries of the SteamVR play area.  This doesn't work if you haven't performed
@@ -163,7 +164,6 @@ public class TeleportVive : MonoBehaviour {
 
 	void Update ()
     {
-
         // If we are currently teleporting (ie handling the fade in/out transition)...
         if(Teleporting)
         {
@@ -179,7 +179,7 @@ public class TeleportVive : MonoBehaviour {
                 {
                     // We have finished fading out - time to teleport!
                     Vector3 offset = OriginTransform.position - HeadTransform.position;
-                    offset.y = 1.2f;
+                    offset.y = 0;
                     OriginTransform.position = Pointer.SelectedPoint + offset;
                 }
 
@@ -197,7 +197,7 @@ public class TeleportVive : MonoBehaviour {
             // Poll controller for pertinent button data
             int index = (int)ActiveController.index;
             var device = SteamVR_Controller.Input(index);
-            bool shouldTeleport = device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger);
+            bool shouldTeleport = device.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad);
             bool shouldCancel = device.GetPressUp(SteamVR_Controller.ButtonMask.Grip);
             if (shouldTeleport || shouldCancel)
             {
@@ -252,23 +252,9 @@ public class TeleportVive : MonoBehaviour {
                 if (index == -1)
                     continue;
 
-                if((int)Controllers[0].index == index)
-                {
-                    if (!leftControllerEnabled)
-                        continue;
-                }
-                if ((int)Controllers[1].index == index)
-                {
-                    if (!rightControllerEnabled)
-                        continue;
-                }
-
                 var device = SteamVR_Controller.Input(index);
-                if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+                if (device.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad))
                 {
-
-                    //Debug.Log("Pressing On device: " + index);
-
                     // Set active controller to this controller, and enable the parabolic pointer and visual indicators
                     // that the user can use to determine where they are able to teleport.
                     ActiveController = obj;

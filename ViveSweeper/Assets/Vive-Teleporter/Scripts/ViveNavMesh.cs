@@ -9,7 +9,7 @@ using System.Collections.Generic;
 [AddComponentMenu("Vive Teleporter/Vive Nav Mesh")]
 [RequireComponent(typeof(BorderRenderer))]
 [ExecuteInEditMode]
-public class ViveNavMesh : MonoBehaviour, ISerializationCallbackReceiver
+public class ViveNavMesh : MonoBehaviour
 {
     /// Material used for the floor mesh when the user is selecting a point to teleport to
     public Material GroundMaterial
@@ -30,6 +30,7 @@ public class ViveNavMesh : MonoBehaviour, ISerializationCallbackReceiver
 
     /// \brief The alpha (transparency) value of the rendered ground mesh)
     /// \sa GroundMaterial
+    [Range(0,1)]
     public float GroundAlpha = 1.0f;
     private float LastGroundAlpha = 1.0f;
     private int AlphaShaderID = -1;
@@ -46,22 +47,29 @@ public class ViveNavMesh : MonoBehaviour, ISerializationCallbackReceiver
     /// \brief The border points of SelectableMesh.  This is automatically generated in ViveNavMeshEditor.
     /// 
     /// This is an array of Vector3 arrays, where each Vector3 array is the points in a polyline.  These polylines combined
-    /// describe the borders of SelectableMesh.
-    public Vector3[][] SelectableMeshBorder
+    /// describe the borders of SelectableMesh.  We have to use BorderPointSets instead of a jagged Vector3[][] array because
+    /// Unity can't serialize jagged arrays for some reason.
+    public BorderPointSet[] SelectableMeshBorder
     {
         get { return _SelectableMeshBorder; }
         set { _SelectableMeshBorder = value; Border.Points = _SelectableMeshBorder; }
     }
-    private Vector3[][] _SelectableMeshBorder;
-    // Use this to actually serialize SelectableMeshBorder (you can't serialize multidimensional arrays apparently)
-    [SerializeField] [HideInInspector] [FormerlySerializedAs("_Serialized")]
-    private SerializableMultiDim _SerializedBorder;
+    [SerializeField] [HideInInspector]
+    private BorderPointSet[] _SelectableMeshBorder;
+
+    [SerializeField] [HideInInspector]
+    private int _NavAreaMask = ~0; // Initialize to all
 
     private BorderRenderer Border;
 
     private Dictionary<Camera, CommandBuffer> cameras = new Dictionary<Camera, CommandBuffer>();
 
     void Start () {
+        if (SelectableMesh == null)
+            SelectableMesh = new Mesh();
+        if (_SelectableMeshBorder == null)
+            _SelectableMeshBorder = new BorderPointSet[0];
+
         Border = GetComponent<BorderRenderer>();
         Border.Points = SelectableMeshBorder;
 
@@ -115,6 +123,10 @@ public class ViveNavMesh : MonoBehaviour, ISerializationCallbackReceiver
             return;
         }
 
+        // If _SelectableMesh == null there is a crash in Unity 5.4 beta (apparently you can't pass null to CommandBuffer::DrawMesh now).
+        if (!_SelectableMesh || !GroundMaterial)
+            return;
+
         var cam = Camera.current;
         if (!cam || cam.cameraType == CameraType.Preview)
             return;
@@ -139,131 +151,59 @@ public class ViveNavMesh : MonoBehaviour, ISerializationCallbackReceiver
             AlphaShaderID = Shader.PropertyToID("_Alpha");
     }
 
-    /// \brief Casts a ray against the contents of this mesh (in world space)
+    /// \brief Casts a ray against the Navmesh and attempts to calculate the ray's worldspace intersection with it.
     /// 
-    /// \param ray The ray to cast against the navmesh, in world space
+    /// This uses Physics raycasts to perform the raycast calculation, so the teleport surface must have a collider
+    /// on it.
     /// 
-    /// \return -1 if no hit, or the distance along the ray of the hit
-    public float Raycast(Ray ray)
+    /// \param p1 First (origin) point of ray
+    /// \param p2 Last (end) point of ray
+    /// \param pointOnNavmesh If the raycast hit something on the navmesh.
+    /// \param hitPoint If hit, the point of the hit.  Otherwise zero.
+    /// 
+    /// \return If the raycast hit something.
+    public bool Linecast(Vector3 p1, Vector3 p2, out bool pointOnNavmesh, out Vector3 hitPoint)
     {
-        if (SelectableMesh == null)
-            return -1;
-
-        for(int x=0;x< SelectableMesh.triangles.Length/3;x++)
+        RaycastHit hit;
+        Vector3 dir = p2 - p1;
+        float dist = dir.magnitude;
+        dir /= dist;
+        if(Physics.Raycast(p1, dir, out hit, dist))
         {
-            Vector3 p1 = SelectableMesh.vertices[SelectableMesh.triangles[x*3  ]];
-            Vector3 p2 = SelectableMesh.vertices[SelectableMesh.triangles[x*3+1]];
-            Vector3 p3 = SelectableMesh.vertices[SelectableMesh.triangles[x*3+2]];
-
-            float i = Intersect(p1, p2, p3, ray);
-            if (i > 0)
-                return i;
-        }
-        return -1;
-    }
-
-    /// \brief  Checks if the specified ray hits the triangle descibed by p1, p2 and p3.
-    ///         Möller–Trumbore ray-triangle intersection algorithm implementation.
-    ///         
-    /// \param p1 Point 1 of triangle
-    /// \param p2 Point 2 of triangle
-    /// \param p3 Point 3 of triangle
-    ///
-    /// Adapted From: http://answers.unity3d.com/questions/861719/a-fast-triangle-triangle-intersection-algorithm-fo.html
-    private static float Intersect(Vector3 p1, Vector3 p2, Vector3 p3, Ray ray)
-    {
-        // Vectors from p1 to p2/p3 (edges)
-        Vector3 e1 = p2 - p1;
-        Vector3 e2 = p3 - p1;
-
-        Vector3 p, q, t;
-        float det, invDet, u, v;        
-
-        // calculating determinant 
-        p = Vector3.Cross(ray.direction, e2);
-        det = Vector3.Dot(e1, p);
-
-        //if determinant is near zero, ray lies in plane of triangle otherwise not
-        if (det > -Mathf.Epsilon && det < Mathf.Epsilon) { return -1; }
-        invDet = 1.0f / det;
-
-        //calculate distance from p1 to ray origin
-        t = ray.origin - p1;
-
-        //Calculate u parameter
-        u = Vector3.Dot(t, p) * invDet;
-
-        //Check for ray hit
-        if (u < 0 || u > 1) { return -1; }
-
-        //Prepare to test v parameter
-        q = Vector3.Cross(t, e1);
-
-        //Calculate v parameter
-        v = Vector3.Dot(ray.direction, q) * invDet;
-
-        //Check for ray hit
-        if (v < 0 || u + v > 1) { return -1; }
-
-        float dist = Vector3.Dot(e2, q) * invDet;
-        if (dist <= Mathf.Epsilon)
-            return -1;
-
-        return dist;
-    }
-
-    public void OnBeforeSerialize()
-    {
-        _SerializedBorder = new SerializableMultiDim(_SelectableMeshBorder);
-    }
-
-    public void OnAfterDeserialize()
-    {
-        _SelectableMeshBorder = _SerializedBorder.ToMultiDimArray();
-    }
-
-    [System.Serializable]
-    private class SerializableMultiDim
-    {
-        public int[] startIndex;
-        public int[] lengths;
-        public Vector3[] arr;
-
-        public SerializableMultiDim (Vector3[][] src) {
-            if(src == null || src.Length == 0)
+            if(Vector3.Dot(Vector3.up, hit.normal) < 0.99f)
             {
-                startIndex = new int[0];
-                lengths = new int[0];
-                arr = new Vector3[0];
-                return;
+                pointOnNavmesh = false;
+                hitPoint = hit.point;
+                return true;
             }
+            hitPoint = hit.point;
+            NavMeshHit navHit;
+            pointOnNavmesh = NavMesh.SamplePosition(hitPoint, out navHit, 0.05f, _NavAreaMask);
 
-            startIndex = new int[src.Length];
-            lengths = new int[src.Length];
-            int cur = 0;
-            for (int x = 0; x < src.Length; x++)
-            {
-                startIndex[x] = cur;
-                lengths[x] = src[x].Length;
-                cur += src[x].Length;
-            }
+            // This is necessary because NavMesh.SamplePosition does a sphere intersection, not a projection onto the mesh or
+            // something like that.  This means that in some scenarios you can have a point that's not actually on/above
+            // the NavMesh but is right next to it.  However, if the point is above a Navmesh position that has a normal
+            // of (0,1,0) we can assume that the closest position on the Navmesh to any point has the same x/z coordinates
+            // UNLESS that point isn't on top of the Navmesh.
+            if( !Mathf.Approximately(navHit.position.x, hitPoint.x) || 
+                !Mathf.Approximately(navHit.position.z, hitPoint.z))
+                pointOnNavmesh = false;
 
-            arr = new Vector3[cur];
-            for (int x = 0; x < src.Length; x++)
-                for (int i = 0; i < src[x].Length; i++)
-                    arr[startIndex[x] + i] = src[x][i];
+            return true;
         }
+        pointOnNavmesh = false;
+        hitPoint = Vector3.zero;
+        return false;
+    }
+}
 
-        public Vector3[][] ToMultiDimArray()
-        {
-            Vector3[][] ret = new Vector3[startIndex.Length][];
-            for(int x=0;x<ret.Length;x++)
-            {
-                ret[x] = new Vector3[lengths[x]];
-                for (int i = 0; i < ret[x].Length; i++)
-                    ret[x][i] = arr[startIndex[x] + i];
-            }
-            return ret;
-        }
+[System.Serializable]
+public class BorderPointSet
+{
+    public Vector3[] Points;
+
+    public BorderPointSet(Vector3[] Points)
+    {
+        this.Points = Points;
     }
 }

@@ -15,6 +15,9 @@ namespace Assets.Scripts.World.GridWorld
         [SerializeField]
         private GameObject _explosionPrefab;
 
+        [SerializeField]
+        private EndGameHandler endGameHandler;
+
         public void StartExplosion(GridSpace space)
         {
             var spaceTransform = space.GetTransform().localPosition;
@@ -38,6 +41,8 @@ namespace Assets.Scripts.World.GridWorld
                 _explosionPrefab,
                 location,
                 Quaternion.identity);
+
+            endGameHandler.LostGame();
         }
     }
 }

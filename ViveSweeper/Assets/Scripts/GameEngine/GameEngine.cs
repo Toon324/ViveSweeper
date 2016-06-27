@@ -18,13 +18,12 @@ public class GameEngine : MonoBehaviour
 
         WorldConstants.MinePrefab = MinePrefab;
 
-        WorldConstants.CurrentDifficulty = WorldConstants.Difficulties.Easy;
-
-        NewGame();
     }
 
-    void NewGame()
+    public void NewGame()
     {
+        //WorldConstants.CurrentDifficulty = difficulty;
+
         switch (WorldConstants.CurrentDifficulty)
         {
             case WorldConstants.Difficulties.Medium:

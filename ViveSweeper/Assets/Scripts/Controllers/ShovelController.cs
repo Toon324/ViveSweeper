@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Scripts.World;
 using Assets.Scripts.World.GridWorld;
+using UnityEngine.SceneManagement;
 
 public class ShovelController : MonoBehaviour {
 
@@ -62,6 +63,7 @@ public class ShovelController : MonoBehaviour {
         //Debug.Log("Attempting to parse: " + name);
 
         if (int.TryParse(name, out y))
+        {
             if (isValidGridSpaceName(y))
             {
                 GridSpace interactSpace = WorldConstants.World.GetSpaceFromWorldIndex(y);
@@ -69,6 +71,17 @@ public class ShovelController : MonoBehaviour {
                 Debug.Log("DUG!");
                 controller.TriggerHapticPulse(500, Valve.VR.EVRButtonId.k_EButton_Axis0);
             }
+        }
+
+        //Menu Interaction
+        else if (name.Equals("New Game - Easy"))
+        {
+            SceneLoader sl = (SceneLoader)GameObject.Find("SceneLoader").GetComponent("SceneLoader");
+            sl.LoadNewGame(1, WorldConstants.Difficulties.Easy);
+            Destroy(collider.gameObject);
+        } 
+
+
     }
 
     //void OnTriggerExit(Collider collider)

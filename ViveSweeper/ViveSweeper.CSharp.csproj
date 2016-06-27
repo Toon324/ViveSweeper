@@ -96,6 +96,8 @@
     <Compile Include="Assets\Scripts\Controllers\ShovelController.cs" />
     <Compile Include="Assets\Scripts\GameEngine\EndGameHandler.cs" />
     <Compile Include="Assets\Scripts\GameEngine\GameEngine.cs" />
+    <Compile Include="Assets\Scripts\GameEngine\SceneLoader.cs" />
+    <Compile Include="Assets\Scripts\GameEngine\SceneLoadingTester.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\EmptySpaceCoroutine.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\GridSpace.cs" />
     <Compile Include="Assets\Scripts\World\GridWorld\GridWorld.cs" />

@@ -9,7 +9,6 @@ public class SceneLoader : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         //Check if there already is a Scene Loader, there should only be one.
         if (GameObject.Find("SceneLoader") != null)
         {
@@ -17,7 +16,7 @@ public class SceneLoader : MonoBehaviour
         }
         this.gameObject.name = "SceneLoader";
         DontDestroyOnLoad(this.gameObject);
-
+        LoadNewGame(1, WorldConstants.Difficulties.Easy);
     }
 
     public void LoadNewGame(int index, WorldConstants.Difficulties difficulty)
@@ -25,8 +24,6 @@ public class SceneLoader : MonoBehaviour
         WorldConstants.CurrentDifficulty = difficulty;
 
         StartCoroutine(LoadNewGame(index));
-
-
     }
 
 
@@ -36,13 +33,10 @@ public class SceneLoader : MonoBehaviour
             yield return new WaitForFixedUpdate();
 
         SceneManager.LoadScene(index);
-
-        
-
     }
 
 
-    void OnLevelWasLoaded(int level)
+    public void OnLevelWasLoaded(int level)
     {
         //Do nothing in the main menu
         if (level == 0)
@@ -52,5 +46,4 @@ public class SceneLoader : MonoBehaviour
 
         engine.NewGame();
     }
-
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//======= Copyright (c) Valve Corporation, All rights reserved. ===============
+using UnityEngine;
 using System.Collections;
 
 public struct PointerEventArgs
@@ -27,10 +28,8 @@ public class SteamVR_LaserPointer : MonoBehaviour
 
     Transform previousContact = null;
 
-    private SteamVR_Controller.Device contDevice { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
-    private SteamVR_TrackedObject trackedObj;
-    // Use this for initialization
-    void Start ()
+	// Use this for initialization
+	void Start ()
     {
         holder = new GameObject();
         holder.transform.parent = this.transform;
@@ -117,7 +116,6 @@ public class SteamVR_LaserPointer : MonoBehaviour
             argsIn.target = hit.transform;
             OnPointerIn(argsIn);
             previousContact = hit.transform;
-           
         }
         if(!bHit)
         {
@@ -130,7 +128,6 @@ public class SteamVR_LaserPointer : MonoBehaviour
 
         if (controller != null && controller.triggerPressed)
         {
-            Debug.Log("WE'RE DOING SOMETHING!!!!");
             pointer.transform.localScale = new Vector3(thickness * 5f, thickness * 5f, dist);
         }
         else

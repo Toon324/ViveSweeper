@@ -4,7 +4,8 @@ using Assets.Scripts.World;
 using Assets.Scripts.World.GridWorld;
 using UnityEngine.SceneManagement;
 
-public class ShovelController : MonoBehaviour {
+public class ShovelController : MonoBehaviour
+{
 
     [SerializeField]
     private GameObject shovel;
@@ -23,7 +24,8 @@ public class ShovelController : MonoBehaviour {
     private bool isEnabled;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
     }
 
@@ -79,9 +81,7 @@ public class ShovelController : MonoBehaviour {
             SceneLoader sl = (SceneLoader)GameObject.Find("SceneLoader").GetComponent("SceneLoader");
             sl.LoadNewGame(1, WorldConstants.Difficulties.Easy);
             Destroy(collider.gameObject);
-        } 
-
-
+        }
     }
 
     //void OnTriggerExit(Collider collider)
@@ -93,6 +93,4 @@ public class ShovelController : MonoBehaviour {
     {
         return (y >= 0 && y <= WorldConstants.World.TotalSize);
     }
-
-
 }

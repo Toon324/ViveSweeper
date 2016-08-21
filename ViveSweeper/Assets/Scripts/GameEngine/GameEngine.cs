@@ -17,7 +17,6 @@ public class GameEngine : MonoBehaviour
         WorldConstants.LoadObjects();
 
         WorldConstants.MinePrefab = MinePrefab;
-
     }
 
     public void NewGame()
@@ -36,19 +35,15 @@ public class GameEngine : MonoBehaviour
                 World = new GridWorld(9);
                 break;
             default:
-                World = new GridWorld();
+                World = new GridWorld(9);
                 break;
         }
 
         WorldConstants.World = World;
     }
 
-
-
     public static void DestroyObject(GameObject obj)
     {
         Destroy(obj);
     }
-
-
 }

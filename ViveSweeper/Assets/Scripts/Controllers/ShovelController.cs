@@ -71,7 +71,7 @@ public class ShovelController : MonoBehaviour
                 GridSpace interactSpace = WorldConstants.World.GetSpaceFromWorldIndex(y);
                 interactSpace.Dig();
                 Debug.Log("DUG!");
-                controller.TriggerHapticPulse(500, Valve.VR.EVRButtonId.k_EButton_Axis0);
+                StartCoroutine(controller.LongVibration(1, 1));
             }
         }
 

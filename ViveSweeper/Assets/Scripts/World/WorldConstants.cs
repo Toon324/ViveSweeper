@@ -20,6 +20,8 @@ namespace Assets.Scripts.World
 
         public static GameObject MinePrefab { get; set; }
 
+        public enum Scenes { MainMenu = 0, Easy = 1 };
+
         public static void LoadObjects()
         {
             GridSpace = Resources.Load<GameObject>("GridSpace");

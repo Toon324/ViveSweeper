@@ -79,7 +79,7 @@ public class ShovelController : MonoBehaviour
         else if (name.Equals("New Game - Easy"))
         {
             SceneLoader sl = (SceneLoader)GameObject.Find("SceneLoader").GetComponent("SceneLoader");
-            sl.LoadNewGame(1, WorldConstants.Difficulties.Easy);
+            sl.LoadNewGame(WorldConstants.Scenes.Easy, WorldConstants.Difficulties.Easy);
             Destroy(collider.gameObject);
         }
     }

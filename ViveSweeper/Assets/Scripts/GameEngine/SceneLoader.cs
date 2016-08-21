@@ -16,30 +16,29 @@ public class SceneLoader : MonoBehaviour
         }
         this.gameObject.name = "SceneLoader";
         DontDestroyOnLoad(this.gameObject);
-        LoadNewGame(1, WorldConstants.Difficulties.Easy);
+        LoadNewGame(WorldConstants.Scenes.Easy, WorldConstants.Difficulties.Easy);
     }
 
-    public void LoadNewGame(int index, WorldConstants.Difficulties difficulty)
+    public void LoadNewGame(WorldConstants.Scenes scene, WorldConstants.Difficulties difficulty)
     {
         WorldConstants.CurrentDifficulty = difficulty;
 
-        StartCoroutine(LoadNewGame(index));
+        StartCoroutine(LoadNewGame(scene));
     }
 
 
-    public IEnumerator LoadNewGame(int index)
+    public IEnumerator LoadNewGame(WorldConstants.Scenes scene)
     {
         for (int i = 0; i < 100; i++)
             yield return new WaitForFixedUpdate();
 
-        SceneManager.LoadScene(index);
+        SceneManager.LoadScene((int)scene);
     }
-
 
     public void OnLevelWasLoaded(int level)
     {
         //Do nothing in the main menu
-        if (level == 0)
+        if (level == (int) WorldConstants.Scenes.MainMenu)
             return;
 
         GameEngine engine = (GameEngine)GameObject.Find("GameEngine").GetComponent("GameEngine");
